@@ -61,11 +61,6 @@ a{color:inherit;text-decoration:none}
 .side a.nav.on svg{stroke:var(--accent-2)}
 .side a.nav .pill{margin-left:auto;font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:100px;background:var(--accent);color:#fff}
 .side .foot{margin-top:auto;padding-top:14px;border-top:1px solid var(--border)}
-.upgrade{background:linear-gradient(135deg,#0d9488,#0f766e);color:#fff;border-radius:11px;padding:14px;margin:8px 0;position:relative;overflow:hidden}
-.upgrade::before{content:"";position:absolute;top:-30px;right:-30px;width:100px;height:100px;background:radial-gradient(circle,rgba(255,255,255,.15),transparent 70%);pointer-events:none}
-.upgrade b{font-size:13px;font-weight:700;display:block;letter-spacing:-.01em}
-.upgrade p{font-size:11.5px;opacity:.85;margin:4px 0 10px;line-height:1.45}
-.upgrade button{background:#fff;color:var(--accent-2);font-size:11.5px;font-weight:600;padding:6px 11px;border-radius:7px}
 .side .user{display:flex;align-items:center;gap:10px;padding:8px 10px}
 .side .user .ava{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#06b6d4,#3b82f6);display:grid;place-items:center;font-weight:700;font-size:11.5px;color:#fff;flex:none}
 .side .user b{font-size:13px;color:var(--ink);font-weight:600;display:block;letter-spacing:-.01em}
@@ -106,6 +101,7 @@ a{color:inherit;text-decoration:none}
 
 /* KPI strip */
 .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.kpis.k4{grid-template-columns:repeat(4,1fr)}
 .kpi{background:#fff;border:1px solid var(--border);border-radius:13px;padding:16px 16px 14px;position:relative;overflow:hidden;transition:.2s;cursor:pointer}
 .kpi:hover{transform:translateY(-1px);border-color:var(--border-strong);box-shadow:var(--shadow-md)}
 .kpi .top{display:flex;align-items:center;gap:8px;color:var(--mut);font-size:12px;font-weight:500;margin-bottom:8px}
@@ -120,13 +116,14 @@ a{color:inherit;text-decoration:none}
 .kpi .vs{font-size:11.5px;color:var(--faint)}
 .kpi .spark{position:absolute;right:14px;top:14px;width:60px;height:24px}
 .kpi .spark svg{width:100%;height:100%;display:block}
-@media(max-width:1300px){.kpis{grid-template-columns:repeat(3,1fr)}.kpi .spark{display:none}}
-@media(max-width:760px){.kpis{grid-template-columns:1fr 1fr}}
+@media(max-width:1300px){.kpis,.kpis.k4{grid-template-columns:repeat(3,1fr)}.kpi .spark{display:none}}
+@media(max-width:760px){.kpis,.kpis.k4{grid-template-columns:1fr 1fr}}
 
 /* main grid */
 .grid-2{display:grid;grid-template-columns:1.6fr 1fr;gap:16px}
+.grid-2eq{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
-@media(max-width:1100px){.grid-2,.grid-3{grid-template-columns:1fr}}
+@media(max-width:1100px){.grid-2,.grid-2eq,.grid-3{grid-template-columns:1fr}}
 
 .card{background:#fff;border:1px solid var(--border);border-radius:13px;overflow:hidden}
 .card-h{display:flex;align-items:flex-start;justify-content:space-between;padding:18px 20px 14px;gap:12px}
@@ -145,7 +142,7 @@ a{color:inherit;text-decoration:none}
 .legend-dot{width:9px;height:9px;border-radius:3px}
 .chart-wrap{position:relative;padding:0 12px 18px}
 .chart-wrap svg{width:100%;height:240px;display:block;overflow:visible}
-.chart-y{display:flex;flex-direction:column;justify-content:space-between;font-size:10.5px;color:var(--faint);font-family:var(--mono);padding:6px 0}
+.chart-wrap.tall svg{height:300px}
 .chart-x{display:flex;justify-content:space-between;font-size:10.5px;color:var(--faint);padding:6px 8px 0;font-family:var(--mono)}
 
 /* funnel */
@@ -157,6 +154,9 @@ a{color:inherit;text-decoration:none}
 .funnel-row .label small{font-size:11.5px;color:var(--mut)}
 .funnel-bar{flex:1.4;height:28px;background:var(--bg);border-radius:7px;overflow:hidden;position:relative}
 .funnel-bar i{position:absolute;left:0;top:0;height:100%;border-radius:7px;background:linear-gradient(90deg,#14b8a6,#0d9488);width:0;transition:width 1.2s cubic-bezier(.2,.7,.2,1)}
+.funnel-bar.blue i{background:linear-gradient(90deg,#06b6d4,#0891b2)}
+.funnel-bar.violet i{background:linear-gradient(90deg,#8b5cf6,#7c3aed)}
+.funnel-bar.amber i{background:linear-gradient(90deg,#fbbf24,#d97706)}
 .funnel-bar span{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:11.5px;font-weight:600;color:#fff;font-family:var(--mono);z-index:1;text-shadow:0 1px 2px rgba(0,0,0,.15)}
 .funnel-row .conv{min-width:50px;text-align:right;font-size:11.5px;font-weight:600;color:var(--accent-2);font-family:var(--mono)}
 .funnel-row .conv.down{color:var(--red)}
@@ -225,14 +225,6 @@ a{color:inherit;text-decoration:none}
 .reveal{opacity:0;transform:translateY(10px);transition:opacity .65s cubic-bezier(.2,.7,.2,1),transform .65s cubic-bezier(.2,.7,.2,1)}
 .reveal.in{opacity:1;transform:none}
 
-/* empty state for sections under development */
-.empty{background:#fff;border:1px solid var(--border);border-radius:13px;padding:56px 32px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:16px}
-.empty .ico{width:72px;height:72px;border-radius:18px;background:linear-gradient(135deg,#ccfbf1,#5eead4);display:grid;place-items:center;color:var(--accent-2)}
-.empty .ico svg{width:32px;height:32px;stroke:currentColor;stroke-width:1.8;fill:none}
-.empty h2{font-size:20px;font-weight:700;letter-spacing:-.025em;margin-top:4px}
-.empty p{color:var(--mut);font-size:14px;max-width:480px;line-height:1.55}
-.empty .actions{display:flex;gap:10px;margin-top:6px}
-
 /* settings form */
 .settings-card{background:#fff;border:1px solid var(--border);border-radius:13px;padding:24px 26px;max-width:680px}
 .settings-card h3{font-size:17px;font-weight:700;margin-bottom:18px;letter-spacing:-.02em}
@@ -290,6 +282,105 @@ a{color:inherit;text-decoration:none}
 .int-card small{font-size:11.5px;color:var(--mut);display:block;margin-top:2px}
 .int-card .status{font-size:11px;font-weight:600;padding:3px 9px;border-radius:100px;background:var(--green-soft);color:var(--green);flex:none}
 .int-card .status.off{background:var(--bg);color:var(--mut)}
+
+/* utm / generic table */
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl thead th{padding:11px 20px;text-align:left;color:var(--mut);font-weight:600;font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;background:var(--surface-2);border-bottom:1px solid var(--border)}
+.tbl thead th.r{text-align:right}
+.tbl tbody tr{border-bottom:1px solid var(--border)}
+.tbl tbody tr:last-child{border-bottom:none}
+.tbl tbody tr:hover{background:var(--surface-2)}
+.tbl td{padding:11px 20px;color:var(--ink-2)}
+.tbl td.r{text-align:right;font-family:var(--mono);font-weight:600;color:var(--ink);font-feature-settings:'tnum' 1}
+.tbl td.b{font-weight:600;color:var(--ink)}
+.tbl .pill{display:inline-block;font-size:10.5px;font-weight:600;padding:2px 8px;border-radius:100px;font-family:var(--mono)}
+.tbl .pill.g{background:var(--green-soft);color:var(--green)}
+.tbl .pill.r{background:var(--red-soft);color:var(--red)}
+.tbl .pill.a{background:var(--amber-soft);color:#b45309}
+.tbl .pill.t{background:var(--accent-soft);color:var(--accent-2)}
+
+/* churn reasons / bar list */
+.bar-list{padding:8px 20px 20px;display:flex;flex-direction:column;gap:11px}
+.bar-row{display:grid;grid-template-columns:170px 1fr 60px;gap:14px;align-items:center;font-size:13px}
+.bar-row .name{color:var(--ink-2);font-weight:500;font-size:13px;display:flex;align-items:center;gap:8px}
+.bar-row .name .dot{width:9px;height:9px;border-radius:3px;flex:none}
+.bar-row .track{height:10px;background:var(--bg);border-radius:6px;overflow:hidden;position:relative}
+.bar-row .track i{position:absolute;left:0;top:0;height:100%;background:linear-gradient(90deg,#0d9488,#14b8a6);width:0;transition:width 1.2s cubic-bezier(.2,.7,.2,1);border-radius:6px}
+.bar-row .track i.red{background:linear-gradient(90deg,#ef4444,#dc2626)}
+.bar-row .track i.amber{background:linear-gradient(90deg,#f59e0b,#d97706)}
+.bar-row .track i.violet{background:linear-gradient(90deg,#8b5cf6,#7c3aed)}
+.bar-row .track i.blue{background:linear-gradient(90deg,#3b82f6,#2563eb)}
+.bar-row .v{font-family:var(--mono);font-weight:600;font-size:12.5px;text-align:right;color:var(--ink);font-feature-settings:'tnum' 1}
+
+/* retention curve mini */
+.ret-curve{padding:8px 20px 20px}
+.ret-curve svg{width:100%;height:200px;display:block}
+
+/* map world */
+.map-wrap{padding:8px 20px 20px}
+.map-wrap svg{width:100%;height:auto;display:block}
+.map-wrap .country{fill:#e3e9ee;stroke:#fff;stroke-width:.4;transition:fill .2s}
+.map-wrap .country.l1{fill:#ccfbf1}
+.map-wrap .country.l2{fill:#5eead4}
+.map-wrap .country.l3{fill:#14b8a6}
+.map-wrap .country.l4{fill:#0d9488}
+.map-wrap .country.l5{fill:#0f766e}
+.map-wrap .country:hover{fill:#ec4899;cursor:pointer}
+.map-legend{display:flex;gap:14px;justify-content:center;font-size:11px;color:var(--mut);padding:0 20px 14px;font-family:var(--mono)}
+.map-legend span{display:inline-flex;align-items:center;gap:5px}
+.map-legend i{width:14px;height:10px;border-radius:2px;display:inline-block}
+
+/* nps gauge */
+.nps-wrap{padding:14px 20px 20px;display:flex;align-items:center;gap:24px}
+.nps-gauge{width:160px;height:90px;position:relative;flex:none}
+.nps-gauge svg{width:100%;height:100%}
+.nps-gauge .val{position:absolute;left:0;right:0;bottom:0;text-align:center;font-size:30px;font-weight:700;letter-spacing:-.03em;font-feature-settings:'tnum' 1}
+.nps-gauge .val small{display:block;font-size:11px;font-weight:500;color:var(--mut);margin-top:-2px;letter-spacing:.04em;text-transform:uppercase}
+.nps-side{flex:1;display:flex;flex-direction:column;gap:10px;font-size:13px}
+.nps-row{display:flex;align-items:center;gap:10px;justify-content:space-between}
+.nps-row b{color:var(--ink);font-weight:600}
+.nps-row .n{font-family:var(--mono);font-weight:600;font-size:13px}
+.nps-row .bar{height:6px;flex:1;background:var(--bg);border-radius:4px;overflow:hidden;margin:0 8px;position:relative;max-width:170px}
+.nps-row .bar i{position:absolute;left:0;top:0;height:100%;border-radius:4px;width:0;transition:width 1.2s cubic-bezier(.2,.7,.2,1)}
+
+/* winback list */
+.wb-list{padding:6px 20px 18px;display:flex;flex-direction:column;gap:10px;max-height:340px;overflow-y:auto}
+.wb-item{display:flex;align-items:center;gap:12px;padding:11px 12px;border:1px solid var(--border);border-radius:10px;transition:.2s}
+.wb-item:hover{border-color:var(--accent);box-shadow:var(--shadow-sm)}
+.wb-item .ava{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#ec4899,#db2777);color:#fff;font-weight:700;font-size:12px;display:grid;place-items:center;flex:none;font-family:var(--mono)}
+.wb-item .info{flex:1;min-width:0}
+.wb-item .info b{font-size:13px;font-weight:600;color:var(--ink);display:block;letter-spacing:-.01em}
+.wb-item .info small{font-size:11.5px;color:var(--mut);display:block;margin-top:1px}
+.wb-item .amt{font-family:var(--mono);font-weight:600;color:var(--red);font-size:12.5px;margin-right:8px}
+.wb-item .btn-mini{font-size:11.5px;font-weight:600;padding:6px 11px;border-radius:7px;background:var(--accent-soft);color:var(--accent-2);transition:.15s}
+.wb-item .btn-mini:hover{background:var(--accent);color:#fff}
+
+/* multi funnel grid */
+.multi-funnel{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:1100px){.multi-funnel{grid-template-columns:1fr}}
+
+/* cohorts page extras */
+.cohort-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;padding:18px 20px 0}
+.cohort-stat{background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:12px 14px}
+.cohort-stat .l{font-size:11px;color:var(--mut);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.cohort-stat .v{font-size:22px;font-weight:700;letter-spacing:-.025em;margin-top:4px;font-feature-settings:'tnum' 1}
+.cohort-stat .d{font-size:11px;font-weight:500;color:var(--mut);margin-top:2px}
+.cohort-stat .d.up{color:var(--green)}
+.cohort-stat .d.down{color:var(--red)}
+@media(max-width:760px){.cohort-stats{grid-template-columns:1fr 1fr}}
+
+/* CAC trend mini cards */
+.cac-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:1100px){.cac-grid{grid-template-columns:1fr}}
+.cac-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:18px}
+.cac-card .ch{font-size:13px;color:var(--mut);font-weight:500}
+.cac-card .ch b{color:var(--ink);font-weight:600}
+.cac-card .v{font-size:22px;font-weight:700;letter-spacing:-.025em;margin-top:6px;font-feature-settings:'tnum' 1}
+.cac-card .delta{display:inline-block;font-size:11px;font-weight:600;padding:2px 7px;border-radius:100px;margin-top:6px}
+.cac-card .delta.up{color:var(--green);background:var(--green-soft)}
+.cac-card .delta.down{color:var(--red);background:var(--red-soft)}
+.cac-card .spk{margin-top:10px;height:34px}
+.cac-card .spk svg{width:100%;height:100%}
 
 .foot{padding:18px 28px;color:var(--mut);font-size:12.5px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;border-top:1px solid var(--border);background:#fff}
 .foot a{color:var(--accent-2);font-weight:500}
@@ -362,8 +453,8 @@ a{color:inherit;text-decoration:none}
       </div>
     </div>
 
-    <!-- KPI strip -->
-    <div class="kpis reveal" data-pages="overview acquisition retention funnels">
+    <!-- ============ OVERVIEW ============ -->
+    <div class="kpis reveal" data-pages="overview">
       <div class="kpi">
         <div class="top"><span class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg></span>MRR</div>
         <div class="val">$<span data-count="84320">0</span></div>
@@ -396,8 +487,7 @@ a{color:inherit;text-decoration:none}
       </div>
     </div>
 
-    <!-- BIG CHART + FUNNEL -->
-    <div class="grid-2 reveal" data-pages="overview acquisition funnels">
+    <div class="grid-2 reveal" data-pages="overview">
       <section class="card chart-card">
         <div class="card-h">
           <div>
@@ -422,22 +512,16 @@ a{color:inherit;text-decoration:none}
               <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0d9488" stop-opacity=".25"/><stop offset="100%" stop-color="#0d9488" stop-opacity="0"/></linearGradient>
               <linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#06b6d4" stop-opacity=".18"/><stop offset="100%" stop-color="#06b6d4" stop-opacity="0"/></linearGradient>
             </defs>
-            <!-- horizontal grid -->
             <line x1="0" y1="40" x2="600" y2="40" stroke="#eef1f4" stroke-width="1"/>
             <line x1="0" y1="100" x2="600" y2="100" stroke="#eef1f4" stroke-width="1"/>
             <line x1="0" y1="160" x2="600" y2="160" stroke="#eef1f4" stroke-width="1"/>
             <line x1="0" y1="220" x2="600" y2="220" stroke="#eef1f4" stroke-width="1"/>
-            <!-- MRR area -->
             <path d="M0,180 L40,170 L80,165 L120,155 L160,150 L200,140 L240,130 L280,125 L320,115 L360,100 L400,95 L440,80 L480,75 L520,55 L560,48 L600,40 L600,240 L0,240 Z" fill="url(#g1)"/>
             <polyline points="0,180 40,170 80,165 120,155 160,150 200,140 240,130 280,125 320,115 360,100 400,95 440,80 480,75 520,55 560,48 600,40" fill="none" stroke="#0d9488" stroke-width="2.5" stroke-linejoin="round"/>
-            <!-- New revenue area -->
             <path d="M0,200 L40,198 L80,195 L120,190 L160,192 L200,186 L240,180 L280,182 L320,175 L360,170 L400,168 L440,160 L480,162 L520,150 L560,148 L600,142 L600,240 L0,240 Z" fill="url(#g2)"/>
-            <polyline points="0,200 40,198 80,195 120,190 160,192 200,186 240,180 280,182 320,175 360,170 400,168 440,160 480,162 520,150 560,148 600,142" fill="none" stroke="#06b6d4" stroke-width="2" stroke-dasharray="0" stroke-linejoin="round"/>
-            <!-- Expansion line -->
+            <polyline points="0,200 40,198 80,195 120,190 160,192 200,186 240,180 280,182 320,175 360,170 400,168 440,160 480,162 520,150 560,148 600,142" fill="none" stroke="#06b6d4" stroke-width="2" stroke-linejoin="round"/>
             <polyline points="0,215 40,213 80,212 120,210 160,210 200,206 240,204 280,202 320,200 360,196 400,194 440,190 480,188 520,184 560,182 600,178" fill="none" stroke="#8b5cf6" stroke-width="1.8" stroke-dasharray="3 3"/>
-            <!-- Churn line (red, low) -->
             <polyline points="0,225 40,224 80,223 120,222 160,224 200,222 240,221 280,222 320,220 360,219 400,218 440,217 480,216 520,215 560,214 600,213" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="2 4"/>
-            <!-- Highlight point on last MRR -->
             <circle cx="600" cy="40" r="5" fill="#fff" stroke="#0d9488" stroke-width="2.5"/>
           </svg>
           <div class="chart-x"><span>1 мая</span><span>8 мая</span><span>15 мая</span><span>22 мая</span><span>29 мая</span><span>5 июн</span><span>12 июн</span><span>18 июн</span></div>
@@ -447,42 +531,17 @@ a{color:inherit;text-decoration:none}
       <section class="card">
         <div class="card-h"><div><h3>Воронка регистрации</h3><div class="sub">Конверсия от посещения до подписки</div></div></div>
         <div class="funnel">
-          <div class="funnel-row">
-            <div class="label"><b>Посетители</b><small>уникальные за период</small></div>
-            <div class="funnel-bar"><i data-w="100"></i><span>24 820</span></div>
-            <div class="conv">100%</div>
-          </div>
-          <div class="funnel-row">
-            <div class="label"><b>Просмотр /pricing</b><small>заглянули в тарифы</small></div>
-            <div class="funnel-bar"><i data-w="42"></i><span>10 418</span></div>
-            <div class="conv">42.0%</div>
-          </div>
-          <div class="funnel-row">
-            <div class="label"><b>Начало регистрации</b><small>открыли форму</small></div>
-            <div class="funnel-bar"><i data-w="18"></i><span>4 466</span></div>
-            <div class="conv">18.0%</div>
-          </div>
-          <div class="funnel-row">
-            <div class="label"><b>Завершили signup</b><small>создали аккаунт</small></div>
-            <div class="funnel-bar"><i data-w="11"></i><span>2 730</span></div>
-            <div class="conv">11.0%</div>
-          </div>
-          <div class="funnel-row">
-            <div class="label"><b>Активация (5+ действий)</b><small>стали активным юзером</small></div>
-            <div class="funnel-bar"><i data-w="6.4"></i><span>1 588</span></div>
-            <div class="conv">6.4%</div>
-          </div>
-          <div class="funnel-row">
-            <div class="label"><b>Платная подписка</b><small>пробили платёж</small></div>
-            <div class="funnel-bar"><i data-w="1.8"></i><span>447</span></div>
-            <div class="conv">1.8%</div>
-          </div>
+          <div class="funnel-row"><div class="label"><b>Посетители</b><small>уникальные за период</small></div><div class="funnel-bar"><i data-w="100"></i><span>24 820</span></div><div class="conv">100%</div></div>
+          <div class="funnel-row"><div class="label"><b>Просмотр /pricing</b><small>заглянули в тарифы</small></div><div class="funnel-bar"><i data-w="42"></i><span>10 418</span></div><div class="conv">42.0%</div></div>
+          <div class="funnel-row"><div class="label"><b>Начало регистрации</b><small>открыли форму</small></div><div class="funnel-bar"><i data-w="18"></i><span>4 466</span></div><div class="conv">18.0%</div></div>
+          <div class="funnel-row"><div class="label"><b>Завершили signup</b><small>создали аккаунт</small></div><div class="funnel-bar"><i data-w="11"></i><span>2 730</span></div><div class="conv">11.0%</div></div>
+          <div class="funnel-row"><div class="label"><b>Активация (5+ действий)</b><small>стали активным юзером</small></div><div class="funnel-bar"><i data-w="6.4"></i><span>1 588</span></div><div class="conv">6.4%</div></div>
+          <div class="funnel-row"><div class="label"><b>Платная подписка</b><small>пробили платёж</small></div><div class="funnel-bar"><i data-w="1.8"></i><span>447</span></div><div class="conv">1.8%</div></div>
         </div>
       </section>
     </div>
 
-    <!-- COHORT + GEO + ACTIVITY -->
-    <div class="grid-3 reveal" data-pages="overview retention cohorts geo">
+    <div class="grid-3 reveal" data-pages="overview">
       <section class="card">
         <div class="card-h"><div><h3>Когортная аналитика</h3><div class="sub">Retention по месяцам регистрации</div></div></div>
         <div class="cohort">
@@ -526,81 +585,354 @@ a{color:inherit;text-decoration:none}
       <section class="card">
         <div class="card-h"><div><h3>Live activity</h3><div class="sub">События за последние 5 минут</div></div></div>
         <div class="feed">
-          <div class="feed-item">
-            <div class="feed-ico" style="background:linear-gradient(135deg,#10b981,#059669)">+</div>
-            <div class="feed-text"><b>Новая платная подписка</b> от <b>Алексея К.</b> — план Pro $49<div class="meta">2 минуты назад<span class="tag up">+$49 MRR</span></div></div>
+          <div class="feed-item"><div class="feed-ico" style="background:linear-gradient(135deg,#10b981,#059669)">+</div><div class="feed-text"><b>Новая платная подписка</b> от <b>Алексея К.</b> — план Pro $49<div class="meta">2 минуты назад<span class="tag up">+$49 MRR</span></div></div></div>
+          <div class="feed-item"><div class="feed-ico" style="background:linear-gradient(135deg,#06b6d4,#0891b2)">↑</div><div class="feed-text"><b>Upgrade Team → Business</b> от <b>Иван П.</b><div class="meta">7 минут назад<span class="tag">+$120 expansion</span></div></div></div>
+          <div class="feed-item"><div class="feed-ico" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed)">●</div><div class="feed-text"><b>Новая регистрация</b> · <b>maria.t@gmail.com</b><div class="meta">9 минут назад · из Беларуси</div></div></div>
+          <div class="feed-item"><div class="feed-ico" style="background:linear-gradient(135deg,#ef4444,#dc2626)">−</div><div class="feed-text"><b>Отмена подписки</b> от <b>Дмитрий В.</b> · план Team<div class="meta">14 минут назад<span class="tag churn">−$29 churn</span></div></div></div>
+          <div class="feed-item"><div class="feed-ico" style="background:linear-gradient(135deg,#10b981,#059669)">+</div><div class="feed-text"><b>Новая платная подписка</b> от <b>Айдар Б.</b> — план Team $29<div class="meta">18 минут назад<span class="tag up">+$29 MRR</span></div></div></div>
+          <div class="feed-item"><div class="feed-ico" style="background:linear-gradient(135deg,#06b6d4,#0891b2)">●</div><div class="feed-text"><b>3 новых регистрации</b> подряд<div class="meta">22 минуты назад · UTM: telegram-ads</div></div></div>
+        </div>
+      </section>
+    </div>
+
+    <div class="reveal" data-pages="overview">
+      <section class="card">
+        <div class="card-h">
+          <div><h3>Топ каналов привлечения</h3><div class="sub">Источник → регистрации → платные · 30Д</div></div>
+          <div class="tabs"><button class="on">Регистрации</button><button>Платные</button><button>LTV</button></div>
+        </div>
+        <table class="ch-tbl">
+          <tr><td><span class="ico" style="background:linear-gradient(135deg,#229ed9,#1c8bc4)">TG</span><b>Telegram Ads</b><small>таргет-каналы в RU/CIS</small></td><td class="r">82 410</td><td class="r">1 240 рег.</td><td class="r">218 платных</td><td class="r"><span class="delta up">↑ 14%</span></td></tr>
+          <tr><td><span class="ico" style="background:linear-gradient(135deg,#ea4335,#d33426)">G</span><b>Google Ads</b><small>search + display</small></td><td class="r">48 220</td><td class="r">680 рег.</td><td class="r">94 платных</td><td class="r"><span class="delta up">↑ 8%</span></td></tr>
+          <tr><td><span class="ico" style="background:linear-gradient(135deg,#000000,#2a2a2a)">𝕏</span><b>Organic</b><small>SEO + соцсети</small></td><td class="r">38 410</td><td class="r">420 рег.</td><td class="r">68 платных</td><td class="r"><span class="delta up">↑ 22%</span></td></tr>
+          <tr><td><span class="ico" style="background:linear-gradient(135deg,#fbbf24,#f59e0b)">★</span><b>Referral</b><small>программа рекомендаций</small></td><td class="r">12 480</td><td class="r">240 рег.</td><td class="r">52 платных</td><td class="r"><span class="delta up">↑ 31%</span></td></tr>
+          <tr><td><span class="ico" style="background:linear-gradient(135deg,#7c3aed,#5b21b6)">PH</span><b>Product Hunt</b><small>launch 12.06.2026</small></td><td class="r">8 920</td><td class="r">150 рег.</td><td class="r">15 платных</td><td class="r"><span class="delta down">↓ 6%</span></td></tr>
+        </table>
+      </section>
+    </div>
+
+    <!-- ============ ACQUISITION ============ -->
+    <div class="kpis k4 reveal" data-pages="acquisition">
+      <div class="kpi"><div class="top"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5"/></svg></span>Новых лидов</div><div class="val"><span data-count="7440">0</span></div><div class="meta"><span class="delta up">↑ 14.2%</span><span class="vs">248/день</span></div></div>
+      <div class="kpi"><div class="top"><span class="ico" style="background:#dbeafe;color:#2563eb"><svg viewBox="0 0 24 24"><path d="M12 2v20M2 12h20"/></svg></span>CAC blended</div><div class="val">$<span data-count="18.4" data-dec="1">0</span></div><div class="meta"><span class="delta up">↓ $2.10</span><span class="vs">было $20.50</span></div></div>
+      <div class="kpi"><div class="top"><span class="ico" style="background:#f3e8ff;color:#7c3aed"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/></svg></span>Конверсия в paid</div><div class="val"><span data-count="6.0" data-dec="1">0</span><small>%</small></div><div class="meta"><span class="delta up">↑ 0.8%</span><span class="vs">от лида</span></div></div>
+      <div class="kpi"><div class="top"><span class="ico" style="background:#fef3c7;color:#d97706"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span>Payback period</div><div class="val"><span data-count="3.4" data-dec="1">0</span><small>мес</small></div><div class="meta"><span class="delta up">↓ 0.6 мес</span><span class="vs">здоровый < 6</span></div></div>
+    </div>
+
+    <div class="reveal" data-pages="acquisition">
+      <section class="card">
+        <div class="card-h">
+          <div><h3>UTM-разбивка по источникам</h3><div class="sub">utm_source / utm_campaign · 30Д</div></div>
+          <div class="tabs"><button class="on">Все</button><button>Платные</button><button>Органика</button></div>
+        </div>
+        <table class="tbl">
+          <thead><tr><th>Source</th><th>Campaign</th><th class="r">Клики</th><th class="r">Рег.</th><th class="r">CR</th><th class="r">Платных</th><th class="r">CAC</th><th class="r">ROAS</th></tr></thead>
+          <tbody>
+            <tr><td class="b">telegram-ads</td><td>q2-promo-pro</td><td class="r">28 420</td><td class="r">512</td><td class="r">1.80%</td><td class="r">88</td><td class="r">$14.20</td><td class="r"><span class="pill g">3.8×</span></td></tr>
+            <tr><td class="b">telegram-ads</td><td>retarget-pricing</td><td class="r">14 110</td><td class="r">312</td><td class="r">2.21%</td><td class="r">62</td><td class="r">$9.80</td><td class="r"><span class="pill g">5.1×</span></td></tr>
+            <tr><td class="b">google-ads</td><td>search-saas-analytics</td><td class="r">24 540</td><td class="r">348</td><td class="r">1.42%</td><td class="r">52</td><td class="r">$22.40</td><td class="r"><span class="pill g">2.4×</span></td></tr>
+            <tr><td class="b">google-ads</td><td>display-retarget</td><td class="r">12 820</td><td class="r">142</td><td class="r">1.11%</td><td class="r">18</td><td class="r">$31.20</td><td class="r"><span class="pill a">1.7×</span></td></tr>
+            <tr><td class="b">organic</td><td>seo-blog</td><td class="r">18 240</td><td class="r">218</td><td class="r">1.20%</td><td class="r">36</td><td class="r">$0</td><td class="r"><span class="pill g">∞</span></td></tr>
+            <tr><td class="b">organic</td><td>twitter-content</td><td class="r">12 480</td><td class="r">128</td><td class="r">1.03%</td><td class="r">22</td><td class="r">$0</td><td class="r"><span class="pill g">∞</span></td></tr>
+            <tr><td class="b">referral</td><td>invite-program</td><td class="r">8 240</td><td class="r">182</td><td class="r">2.21%</td><td class="r">42</td><td class="r">$4.20</td><td class="r"><span class="pill g">8.2×</span></td></tr>
+            <tr><td class="b">producthunt</td><td>launch-jun-12</td><td class="r">8 920</td><td class="r">150</td><td class="r">1.68%</td><td class="r">15</td><td class="r">$0</td><td class="r"><span class="pill g">∞</span></td></tr>
+            <tr><td class="b">linkedin-ads</td><td>b2b-decision-makers</td><td class="r">4 820</td><td class="r">62</td><td class="r">1.29%</td><td class="r">14</td><td class="r">$38.40</td><td class="r"><span class="pill a">1.4×</span></td></tr>
+            <tr><td class="b">facebook-ads</td><td>q2-broad</td><td class="r">6 240</td><td class="r">48</td><td class="r">0.77%</td><td class="r">5</td><td class="r">$58.20</td><td class="r"><span class="pill r">0.6×</span></td></tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+
+    <div class="cac-grid reveal" data-pages="acquisition">
+      <div class="cac-card"><div class="ch"><b>Telegram Ads</b> · CAC</div><div class="v">$11.80</div><span class="delta up">↓ $3.20</span><div class="spk"><svg viewBox="0 0 100 34" preserveAspectRatio="none"><polyline class="s-teal" points="0,8 10,10 20,12 30,14 40,18 50,20 60,22 70,24 80,26 90,28 100,30" fill="none" stroke-width="2"/></svg></div></div>
+      <div class="cac-card"><div class="ch"><b>Google Ads</b> · CAC</div><div class="v">$26.40</div><span class="delta down">↑ $1.10</span><div class="spk"><svg viewBox="0 0 100 34" preserveAspectRatio="none"><polyline class="s-amber" points="0,18 10,17 20,18 30,16 40,15 50,17 60,16 70,14 80,15 90,13 100,12" fill="none" stroke-width="2"/></svg></div></div>
+      <div class="cac-card"><div class="ch"><b>Referral</b> · CAC</div><div class="v">$4.20</div><span class="delta up">↓ $1.80</span><div class="spk"><svg viewBox="0 0 100 34" preserveAspectRatio="none"><polyline class="s-violet" points="0,6 10,8 20,10 30,12 40,14 50,16 60,18 70,20 80,22 90,24 100,26" fill="none" stroke-width="2"/></svg></div></div>
+    </div>
+
+    <div class="grid-2eq reveal" data-pages="acquisition">
+      <section class="card">
+        <div class="card-h"><div><h3>Тренд новых лидов</h3><div class="sub">Лидов / день за 30Д</div></div></div>
+        <div class="chart-wrap">
+          <svg viewBox="0 0 600 240" preserveAspectRatio="none">
+            <defs><linearGradient id="gA" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#8b5cf6" stop-opacity=".25"/><stop offset="100%" stop-color="#8b5cf6" stop-opacity="0"/></linearGradient></defs>
+            <line x1="0" y1="50" x2="600" y2="50" stroke="#eef1f4"/><line x1="0" y1="110" x2="600" y2="110" stroke="#eef1f4"/><line x1="0" y1="170" x2="600" y2="170" stroke="#eef1f4"/>
+            <path d="M0,180 L30,170 L60,165 L90,160 L120,168 L150,150 L180,145 L210,140 L240,148 L270,135 L300,125 L330,115 L360,120 L390,108 L420,100 L450,95 L480,88 L510,80 L540,75 L570,65 L600,55 L600,240 L0,240 Z" fill="url(#gA)"/>
+            <polyline points="0,180 30,170 60,165 90,160 120,168 150,150 180,145 210,140 240,148 270,135 300,125 330,115 360,120 390,108 420,100 450,95 480,88 510,80 540,75 570,65 600,55" fill="none" stroke="#8b5cf6" stroke-width="2.5" stroke-linejoin="round"/>
+            <circle cx="600" cy="55" r="5" fill="#fff" stroke="#8b5cf6" stroke-width="2.5"/>
+          </svg>
+          <div class="chart-x"><span>1 мая</span><span>8 мая</span><span>15 мая</span><span>22 мая</span><span>29 мая</span><span>5 июн</span><span>12 июн</span><span>18 июн</span></div>
+        </div>
+      </section>
+      <section class="card">
+        <div class="card-h"><div><h3>Разбивка лидов по устройствам</h3><div class="sub">Где регистрируются</div></div></div>
+        <div class="bar-list">
+          <div class="bar-row"><div class="name"><span class="dot" style="background:#0d9488"></span>Desktop</div><div class="track"><i data-w="58"></i></div><div class="v">58%</div></div>
+          <div class="bar-row"><div class="name"><span class="dot" style="background:#06b6d4"></span>Mobile iOS</div><div class="track"><i class="blue" data-w="22"></i></div><div class="v">22%</div></div>
+          <div class="bar-row"><div class="name"><span class="dot" style="background:#8b5cf6"></span>Mobile Android</div><div class="track"><i class="violet" data-w="14"></i></div><div class="v">14%</div></div>
+          <div class="bar-row"><div class="name"><span class="dot" style="background:#f59e0b"></span>Tablet</div><div class="track"><i class="amber" data-w="6"></i></div><div class="v">6%</div></div>
+        </div>
+        <div class="card-h" style="padding-top:0"><div><h3 style="font-size:13.5px">Браузеры</h3></div></div>
+        <div class="bar-list">
+          <div class="bar-row"><div class="name"><span class="dot" style="background:#0d9488"></span>Chrome</div><div class="track"><i data-w="64"></i></div><div class="v">64%</div></div>
+          <div class="bar-row"><div class="name"><span class="dot" style="background:#06b6d4"></span>Safari</div><div class="track"><i class="blue" data-w="18"></i></div><div class="v">18%</div></div>
+          <div class="bar-row"><div class="name"><span class="dot" style="background:#8b5cf6"></span>Firefox</div><div class="track"><i class="violet" data-w="9"></i></div><div class="v">9%</div></div>
+          <div class="bar-row"><div class="name"><span class="dot" style="background:#f59e0b"></span>Edge / Opera</div><div class="track"><i class="amber" data-w="9"></i></div><div class="v">9%</div></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ============ RETENTION ============ -->
+    <div class="kpis k4 reveal" data-pages="retention">
+      <div class="kpi"><div class="top"><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/></svg></span>Месячный retention</div><div class="val"><span data-count="78.4" data-dec="1">0</span><small>%</small></div><div class="meta"><span class="delta up">↑ 2.1%</span><span class="vs">M1 retention</span></div></div>
+      <div class="kpi"><div class="top"><span class="ico" style="background:#fee2e2;color:#dc2626"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></span>Gross churn</div><div class="val"><span data-count="3.2" data-dec="1">0</span><small>%</small></div><div class="meta"><span class="delta down">↑ 0.4%</span><span class="vs">28 юзеров</span></div></div>
+      <div class="kpi"><div class="top"><span class="ico" style="background:#dcfce7;color:#10b981"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span>Net revenue retention</div><div class="val"><span data-count="112" data-dec="0">0</span><small>%</small></div><div class="meta"><span class="delta up">↑ 4%</span><span class="vs">> 100% — growth</span></div></div>
+      <div class="kpi"><div class="top"><span class="ico" style="background:#fce7f3;color:#db2777"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/></svg></span>Avg LTV</div><div class="val">$<span data-count="412">0</span></div><div class="meta"><span class="delta up">↑ $38</span><span class="vs">по платным</span></div></div>
+    </div>
+
+    <div class="grid-2eq reveal" data-pages="retention">
+      <section class="card">
+        <div class="card-h"><div><h3>Причины отписок</h3><div class="sub">Опрос exit-формы · 28 отписок за 30Д</div></div></div>
+        <div class="bar-list">
+          <div class="bar-row"><div class="name"><span class="dot" style="background:#ef4444"></span>Дорого / нет бюджета</div><div class="track"><i class="red" data-w="34"></i></div><div class="v">34%</div></div>
+          <div class="bar-row"><div class="name"><span class="dot" style="background:#f59e0b"></span>Не хватает фичи X</div><div class="track"><i class="amber" data-w="22"></i></div><div class="v">22%</div></div>
+          <div class="bar-row"><div class="name"><span class="dot" style="background:#8b5cf6"></span>Перешли на конкурента</div><div class="track"><i class="violet" data-w="18"></i></div><div class="v">18%</div></div>
+          <div class="bar-row"><div class="name"><span class="dot" style="background:#3b82f6"></span>Команда распалась</div><div class="track"><i class="blue" data-w="11"></i></div><div class="v">11%</div></div>
+          <div class="bar-row"><div class="name"><span class="dot" style="background:#0d9488"></span>Слишком сложно</div><div class="track"><i data-w="9"></i></div><div class="v">9%</div></div>
+          <div class="bar-row"><div class="name"><span class="dot" style="background:#cdd6dd"></span>Другое / без ответа</div><div class="track"><i style="background:linear-gradient(90deg,#9aa7b3,#5e6e7d)" data-w="6"></i></div><div class="v">6%</div></div>
+        </div>
+      </section>
+      <section class="card">
+        <div class="card-h"><div><h3>NPS · последние 30 дней</h3><div class="sub">412 ответов · ответили 18% активных</div></div></div>
+        <div class="nps-wrap">
+          <div class="nps-gauge">
+            <svg viewBox="0 0 160 90">
+              <path d="M10,85 A75,75 0 0 1 150,85" fill="none" stroke="#fee2e2" stroke-width="12" stroke-linecap="round"/>
+              <path d="M10,85 A75,75 0 0 1 150,85" fill="none" stroke="#10b981" stroke-width="12" stroke-linecap="round" stroke-dasharray="135 235" stroke-dashoffset="-12"/>
+            </svg>
+            <div class="val">+42<small>nps</small></div>
           </div>
-          <div class="feed-item">
-            <div class="feed-ico" style="background:linear-gradient(135deg,#06b6d4,#0891b2)">↑</div>
-            <div class="feed-text"><b>Upgrade Team → Business</b> от <b>Иван П.</b><div class="meta">7 минут назад<span class="tag">+$120 expansion</span></div></div>
-          </div>
-          <div class="feed-item">
-            <div class="feed-ico" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed)">●</div>
-            <div class="feed-text"><b>Новая регистрация</b> · <b>maria.t@gmail.com</b><div class="meta">9 минут назад · из Беларуси</div></div>
-          </div>
-          <div class="feed-item">
-            <div class="feed-ico" style="background:linear-gradient(135deg,#ef4444,#dc2626)">−</div>
-            <div class="feed-text"><b>Отмена подписки</b> от <b>Дмитрий В.</b> · план Team<div class="meta">14 минут назад<span class="tag churn">−$29 churn</span></div></div>
-          </div>
-          <div class="feed-item">
-            <div class="feed-ico" style="background:linear-gradient(135deg,#10b981,#059669)">+</div>
-            <div class="feed-text"><b>Новая платная подписка</b> от <b>Айдар Б.</b> — план Team $29<div class="meta">18 минут назад<span class="tag up">+$29 MRR</span></div></div>
-          </div>
-          <div class="feed-item">
-            <div class="feed-ico" style="background:linear-gradient(135deg,#06b6d4,#0891b2)">●</div>
-            <div class="feed-text"><b>3 новых регистрации</b> подряд<div class="meta">22 минуты назад · UTM: telegram-ads</div></div>
+          <div class="nps-side">
+            <div class="nps-row"><b>Promoters (9–10)</b><div class="bar"><i style="background:#10b981" data-w="58"></i></div><span class="n">58%</span></div>
+            <div class="nps-row"><b>Passives (7–8)</b><div class="bar"><i style="background:#f59e0b" data-w="26"></i></div><span class="n">26%</span></div>
+            <div class="nps-row"><b>Detractors (0–6)</b><div class="bar"><i style="background:#ef4444" data-w="16"></i></div><span class="n">16%</span></div>
           </div>
         </div>
       </section>
     </div>
 
-    <!-- CHANNELS -->
-    <div class="reveal" data-pages="overview acquisition">
+    <div class="grid-2 reveal" data-pages="retention">
       <section class="card">
-        <div class="card-h">
-          <div><h3>Топ каналов привлечения</h3><div class="sub">Источник → регистрации → платные · 30Д</div></div>
-          <div class="tabs">
-            <button class="on">Регистрации</button>
-            <button>Платные</button>
-            <button>LTV</button>
+        <div class="card-h"><div><h3>Retention curve · weekly</h3><div class="sub">Средняя выживаемость когорт по неделям</div></div></div>
+        <div class="ret-curve">
+          <svg viewBox="0 0 600 200" preserveAspectRatio="none">
+            <defs><linearGradient id="rcG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0d9488" stop-opacity=".25"/><stop offset="100%" stop-color="#0d9488" stop-opacity="0"/></linearGradient></defs>
+            <line x1="0" y1="20" x2="600" y2="20" stroke="#eef1f4"/><line x1="0" y1="60" x2="600" y2="60" stroke="#eef1f4"/><line x1="0" y1="100" x2="600" y2="100" stroke="#eef1f4"/><line x1="0" y1="140" x2="600" y2="140" stroke="#eef1f4"/>
+            <path d="M0,20 L40,55 L80,75 L120,90 L160,100 L200,108 L240,115 L280,120 L320,124 L360,128 L400,131 L440,134 L480,136 L520,138 L560,140 L600,141 L600,200 L0,200 Z" fill="url(#rcG)"/>
+            <polyline points="0,20 40,55 80,75 120,90 160,100 200,108 240,115 280,120 320,124 360,128 400,131 440,134 480,136 520,138 560,140 600,141" fill="none" stroke="#0d9488" stroke-width="2.5"/>
+            <polyline points="0,20 40,48 80,68 120,82 160,92 200,100 240,107 280,112 320,116 360,120 400,123 440,126 480,128 520,130 560,132 600,133" fill="none" stroke="#3b82f6" stroke-width="2" stroke-dasharray="4 4"/>
+          </svg>
+          <div class="chart-x"><span>W0</span><span>W1</span><span>W2</span><span>W4</span><span>W6</span><span>W8</span><span>W10</span><span>W12</span></div>
+          <div class="chart-legend" style="padding-top:8px">
+            <span class="legend-item"><span class="legend-dot" style="background:#0d9488"></span>Все юзеры</span>
+            <span class="legend-item"><span class="legend-dot" style="background:#3b82f6"></span>Только платные <b>+12% vs all</b></span>
           </div>
         </div>
-        <table class="ch-tbl">
-          <tr>
-            <td><span class="ico" style="background:linear-gradient(135deg,#229ed9,#1c8bc4)">TG</span><b>Telegram Ads</b><small>таргет-каналы в RU/CIS</small></td>
-            <td class="r">82 410</td>
-            <td class="r">1 240 рег.</td>
-            <td class="r">218 платных</td>
-            <td class="r"><span class="delta up">↑ 14%</span></td>
-          </tr>
-          <tr>
-            <td><span class="ico" style="background:linear-gradient(135deg,#ea4335,#d33426)">G</span><b>Google Ads</b><small>search + display</small></td>
-            <td class="r">48 220</td>
-            <td class="r">680 рег.</td>
-            <td class="r">94 платных</td>
-            <td class="r"><span class="delta up">↑ 8%</span></td>
-          </tr>
-          <tr>
-            <td><span class="ico" style="background:linear-gradient(135deg,#000000,#2a2a2a)">𝕏</span><b>Organic</b><small>SEO + соцсети</small></td>
-            <td class="r">38 410</td>
-            <td class="r">420 рег.</td>
-            <td class="r">68 платных</td>
-            <td class="r"><span class="delta up">↑ 22%</span></td>
-          </tr>
-          <tr>
-            <td><span class="ico" style="background:linear-gradient(135deg,#fbbf24,#f59e0b)">★</span><b>Referral</b><small>программа рекомендаций</small></td>
-            <td class="r">12 480</td>
-            <td class="r">240 рег.</td>
-            <td class="r">52 платных</td>
-            <td class="r"><span class="delta up">↑ 31%</span></td>
-          </tr>
-          <tr>
-            <td><span class="ico" style="background:linear-gradient(135deg,#7c3aed,#5b21b6)">PH</span><b>Product Hunt</b><small>launch 12.06.2026</small></td>
-            <td class="r">8 920</td>
-            <td class="r">150 рег.</td>
-            <td class="r">15 платных</td>
-            <td class="r"><span class="delta down">↓ 6%</span></td>
-          </tr>
+      </section>
+      <section class="card">
+        <div class="card-h">
+          <div><h3>Win-back · кандидаты на возврат</h3><div class="sub">Отписались < 14 дней назад · приоритет: бывший LTV</div></div>
+          <div class="tabs"><button class="on">Топ</button><button>Все 28</button></div>
+        </div>
+        <div class="wb-list">
+          <div class="wb-item"><div class="ava">ДВ</div><div class="info"><b>Дмитрий В.</b><small>Team · отписался 4 дня назад · «дорого»</small></div><div class="amt">−$348 LTV</div><button class="btn-mini">Скидка 30%</button></div>
+          <div class="wb-item"><div class="ava">ЕС</div><div class="info"><b>Елена С.</b><small>Pro · отписалась 6 дней назад · «нет фичи X»</small></div><div class="amt">−$294 LTV</div><button class="btn-mini">Списаться</button></div>
+          <div class="wb-item"><div class="ava">АП</div><div class="info"><b>Артём П.</b><small>Business · отписался 9 дней назад · «команда»</small></div><div class="amt">−$720 LTV</div><button class="btn-mini">Pause 3 мес</button></div>
+          <div class="wb-item"><div class="ava">МК</div><div class="info"><b>Максим К.</b><small>Team · отписался 12 дней назад · «конкурент»</small></div><div class="amt">−$232 LTV</div><button class="btn-mini">Демо v2</button></div>
+          <div class="wb-item"><div class="ava">ИР</div><div class="info"><b>Ирина Р.</b><small>Pro · отписалась 13 дней назад · «сложно»</small></div><div class="amt">−$196 LTV</div><button class="btn-mini">Онбординг</button></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ============ FUNNELS ============ -->
+    <div class="kpis k4 reveal" data-pages="funnels">
+      <div class="kpi"><div class="top"><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 3h18v4H3zM6 7v14h12V7"/></svg></span>Visitor → Paid</div><div class="val"><span data-count="1.80" data-dec="2">0</span><small>%</small></div><div class="meta"><span class="delta up">↑ 0.21%</span><span class="vs">end-to-end</span></div></div>
+      <div class="kpi"><div class="top"><span class="ico" style="background:#dbeafe;color:#2563eb"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg></span>Signup CR</div><div class="val"><span data-count="11.0" data-dec="1">0</span><small>%</small></div><div class="meta"><span class="delta up">↑ 1.4%</span><span class="vs">от посетителей</span></div></div>
+      <div class="kpi"><div class="top"><span class="ico" style="background:#f3e8ff;color:#7c3aed"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/></svg></span>Activation</div><div class="val"><span data-count="58.2" data-dec="1">0</span><small>%</small></div><div class="meta"><span class="delta up">↑ 3.8%</span><span class="vs">от signup</span></div></div>
+      <div class="kpi"><div class="top"><span class="ico" style="background:#fef3c7;color:#d97706"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>Trial → Paid</div><div class="val"><span data-count="28.4" data-dec="1">0</span><small>%</small></div><div class="meta"><span class="delta up">↑ 2.2%</span><span class="vs">после 14д триала</span></div></div>
+    </div>
+
+    <div class="multi-funnel reveal" data-pages="funnels">
+      <section class="card">
+        <div class="card-h"><div><h3>Воронка 1 · Регистрация</h3><div class="sub">visitor → signup</div></div></div>
+        <div class="funnel">
+          <div class="funnel-row"><div class="label"><b>Посетители</b><small>уникальные</small></div><div class="funnel-bar"><i data-w="100"></i><span>24 820</span></div><div class="conv">100%</div></div>
+          <div class="funnel-row"><div class="label"><b>Лендинг → /signup</b><small>клик на CTA</small></div><div class="funnel-bar"><i data-w="32"></i><span>7 942</span></div><div class="conv">32.0%</div></div>
+          <div class="funnel-row"><div class="label"><b>Открыли форму</b><small>увидели поля</small></div><div class="funnel-bar"><i data-w="22"></i><span>5 460</span></div><div class="conv">22.0%</div></div>
+          <div class="funnel-row"><div class="label"><b>Заполнили email</b><small>+ 1 поле</small></div><div class="funnel-bar"><i data-w="15"></i><span>3 724</span></div><div class="conv">15.0%</div></div>
+          <div class="funnel-row"><div class="label"><b>Подтвердили email</b><small>кликнули в письме</small></div><div class="funnel-bar"><i data-w="11"></i><span>2 730</span></div><div class="conv">11.0%</div></div>
+        </div>
+      </section>
+      <section class="card">
+        <div class="card-h"><div><h3>Воронка 2 · Активация</h3><div class="sub">signup → активный юзер</div></div></div>
+        <div class="funnel">
+          <div class="funnel-row"><div class="label"><b>Создан аккаунт</b><small>после email</small></div><div class="funnel-bar blue"><i data-w="100"></i><span>2 730</span></div><div class="conv">100%</div></div>
+          <div class="funnel-row"><div class="label"><b>Подключили данные</b><small>первый источник</small></div><div class="funnel-bar blue"><i data-w="78"></i><span>2 129</span></div><div class="conv">78.0%</div></div>
+          <div class="funnel-row"><div class="label"><b>Создали дашборд</b><small>любой</small></div><div class="funnel-bar blue"><i data-w="64"></i><span>1 747</span></div><div class="conv">64.0%</div></div>
+          <div class="funnel-row"><div class="label"><b>Пригласили команду</b><small>2+ юзера</small></div><div class="funnel-bar blue"><i data-w="44"></i><span>1 201</span></div><div class="conv">44.0%</div></div>
+          <div class="funnel-row"><div class="label"><b>Активный (5+ действий)</b><small>день 7</small></div><div class="funnel-bar blue"><i data-w="58"></i><span>1 588</span></div><div class="conv">58.2%</div></div>
+        </div>
+      </section>
+      <section class="card">
+        <div class="card-h"><div><h3>Воронка 3 · Trial → Paid</h3><div class="sub">14-дневный триал</div></div></div>
+        <div class="funnel">
+          <div class="funnel-row"><div class="label"><b>Старт триала</b><small>добавили карту</small></div><div class="funnel-bar violet"><i data-w="100"></i><span>1 573</span></div><div class="conv">100%</div></div>
+          <div class="funnel-row"><div class="label"><b>Использовали 3+ раза</b><small>день 3</small></div><div class="funnel-bar violet"><i data-w="74"></i><span>1 164</span></div><div class="conv">74.0%</div></div>
+          <div class="funnel-row"><div class="label"><b>Использовали 7+ раз</b><small>день 7</small></div><div class="funnel-bar violet"><i data-w="52"></i><span>818</span></div><div class="conv">52.0%</div></div>
+          <div class="funnel-row"><div class="label"><b>Дошли до day 14</b><small>не отказались</small></div><div class="funnel-bar violet"><i data-w="38"></i><span>598</span></div><div class="conv">38.0%</div></div>
+          <div class="funnel-row"><div class="label"><b>Конвертировались в paid</b><small>первый платёж</small></div><div class="funnel-bar violet"><i data-w="28"></i><span>447</span></div><div class="conv">28.4%</div></div>
+        </div>
+      </section>
+      <section class="card">
+        <div class="card-h"><div><h3>Воронка 4 · Upgrade</h3><div class="sub">Team → Business / Enterprise</div></div></div>
+        <div class="funnel">
+          <div class="funnel-row"><div class="label"><b>Team-подписки</b><small>активные</small></div><div class="funnel-bar amber"><i data-w="100"></i><span>1 840</span></div><div class="conv">100%</div></div>
+          <div class="funnel-row"><div class="label"><b>Достигли лимита</b><small>места / события</small></div><div class="funnel-bar amber"><i data-w="42"></i><span>773</span></div><div class="conv">42.0%</div></div>
+          <div class="funnel-row"><div class="label"><b>Зашли в /upgrade</b><small>в личке</small></div><div class="funnel-bar amber"><i data-w="22"></i><span>405</span></div><div class="conv">22.0%</div></div>
+          <div class="funnel-row"><div class="label"><b>Запросили демо</b><small>Business+</small></div><div class="funnel-bar amber"><i data-w="11"></i><span>202</span></div><div class="conv">11.0%</div></div>
+          <div class="funnel-row"><div class="label"><b>Закрылись в upgrade</b><small>↑ ARPU $120</small></div><div class="funnel-bar amber"><i data-w="6"></i><span>110</span></div><div class="conv">6.0%</div></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ============ COHORTS ============ -->
+    <div class="cohort-stats reveal" data-pages="cohorts">
+      <div class="cohort-stat"><div class="l">Лучшая когорта</div><div class="v">Июнь '26</div><div class="d up">↑ 76% retention W1</div></div>
+      <div class="cohort-stat"><div class="l">Средний M1</div><div class="v">53%</div><div class="d up">↑ 4% vs прошлый кв.</div></div>
+      <div class="cohort-stat"><div class="l">Power-users (>30д)</div><div class="v">1 412</div><div class="d up">↑ 18%</div></div>
+      <div class="cohort-stat"><div class="l">Когорты под мониторингом</div><div class="v">12</div><div class="d">с янв 2026</div></div>
+    </div>
+
+    <div class="reveal" data-pages="cohorts">
+      <section class="card">
+        <div class="card-h">
+          <div><h3>Retention по неделям регистрации</h3><div class="sub">Все когорты с января 2026 · % выживших</div></div>
+          <div class="tabs"><button class="on">% выжило</button><button>Абсолют</button><button>Revenue</button></div>
+        </div>
+        <div class="cohort">
+          <table>
+            <thead><tr><th class="first">Когорта</th><th>Юзеров</th><th>W1</th><th>W2</th><th>W3</th><th>W4</th><th>W6</th><th>W8</th><th>W10</th><th>W12</th><th>W16</th><th>W20</th></tr></thead>
+            <tbody>
+              <tr><td class="first">Январь 2026</td><td class="users">820</td><td class="h5">100%</td><td class="h4">62%</td><td class="h3">48%</td><td class="h3">40%</td><td class="h2">34%</td><td class="h2">30%</td><td class="h2">28%</td><td class="h1">26%</td><td class="h1">24%</td><td class="h1">22%</td></tr>
+              <tr><td class="first">Февраль 2026</td><td class="users">1 040</td><td class="h5">100%</td><td class="h4">65%</td><td class="h3">50%</td><td class="h3">42%</td><td class="h2">35%</td><td class="h2">31%</td><td class="h2">28%</td><td class="h2">26%</td><td class="h1">24%</td><td class="h1">22%</td></tr>
+              <tr><td class="first">Март 2026</td><td class="users">1 240</td><td class="h5">100%</td><td class="h4">68%</td><td class="h3">52%</td><td class="h3">44%</td><td class="h2">38%</td><td class="h2">35%</td><td class="h2">33%</td><td class="h2">31%</td><td class="h1">28%</td><td class="h0">—</td></tr>
+              <tr><td class="first">Апрель 2026</td><td class="users">1 580</td><td class="h5">100%</td><td class="h4">71%</td><td class="h4">58%</td><td class="h3">48%</td><td class="h3">42%</td><td class="h2">40%</td><td class="h2">37%</td><td class="h0">—</td><td class="h0">—</td><td class="h0">—</td></tr>
+              <tr><td class="first">Май 2026</td><td class="users">2 120</td><td class="h5">100%</td><td class="h5">74%</td><td class="h4">61%</td><td class="h4">53%</td><td class="h3">46%</td><td class="h0">—</td><td class="h0">—</td><td class="h0">—</td><td class="h0">—</td><td class="h0">—</td></tr>
+              <tr><td class="first">Июнь 2026</td><td class="users">2 730</td><td class="h5">100%</td><td class="h5">76%</td><td class="h4">64%</td><td class="h0">—</td><td class="h0">—</td><td class="h0">—</td><td class="h0">—</td><td class="h0">—</td><td class="h0">—</td><td class="h0">—</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <div class="grid-2 reveal" data-pages="cohorts">
+      <section class="card">
+        <div class="card-h"><div><h3>Retention curves · сравнение</h3><div class="sub">3 последних когорты overlay</div></div></div>
+        <div class="ret-curve">
+          <svg viewBox="0 0 600 200" preserveAspectRatio="none">
+            <line x1="0" y1="20" x2="600" y2="20" stroke="#eef1f4"/><line x1="0" y1="60" x2="600" y2="60" stroke="#eef1f4"/><line x1="0" y1="100" x2="600" y2="100" stroke="#eef1f4"/><line x1="0" y1="140" x2="600" y2="140" stroke="#eef1f4"/>
+            <polyline points="0,20 50,52 100,72 150,88 200,98 250,108 300,115 350,120 400,124 450,128 500,131 550,134 600,136" fill="none" stroke="#0d9488" stroke-width="2.5"/>
+            <polyline points="0,20 50,46 100,66 150,80 200,90 250,98 300,106 350,110 400,114 450,118 500,121 550,123 600,125" fill="none" stroke="#3b82f6" stroke-width="2.5"/>
+            <polyline points="0,20 50,42 100,60 150,76 200,84 250,92 300,99 350,104 400,108 450,112 500,115 550,117 600,119" fill="none" stroke="#8b5cf6" stroke-width="2.5"/>
+          </svg>
+          <div class="chart-x"><span>W0</span><span>W2</span><span>W4</span><span>W6</span><span>W8</span><span>W10</span><span>W12</span></div>
+          <div class="chart-legend" style="padding-top:8px">
+            <span class="legend-item"><span class="legend-dot" style="background:#0d9488"></span>Апрель '26</span>
+            <span class="legend-item"><span class="legend-dot" style="background:#3b82f6"></span>Май '26</span>
+            <span class="legend-item"><span class="legend-dot" style="background:#8b5cf6"></span>Июнь '26</span>
+          </div>
+        </div>
+      </section>
+      <section class="card">
+        <div class="card-h"><div><h3>Power-users по тарифам</h3><div class="sub">Юзеры с 30+ днями активности</div></div></div>
+        <div class="bar-list">
+          <div class="bar-row"><div class="name"><span class="dot" style="background:#0f766e"></span>Enterprise</div><div class="track"><i data-w="92"></i></div><div class="v">92%</div></div>
+          <div class="bar-row"><div class="name"><span class="dot" style="background:#0d9488"></span>Business</div><div class="track"><i data-w="78"></i></div><div class="v">78%</div></div>
+          <div class="bar-row"><div class="name"><span class="dot" style="background:#14b8a6"></span>Pro</div><div class="track"><i data-w="64"></i></div><div class="v">64%</div></div>
+          <div class="bar-row"><div class="name"><span class="dot" style="background:#5eead4"></span>Team</div><div class="track"><i data-w="48"></i></div><div class="v">48%</div></div>
+          <div class="bar-row"><div class="name"><span class="dot" style="background:#ccfbf1"></span>Free</div><div class="track"><i data-w="22"></i></div><div class="v">22%</div></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ============ GEO ============ -->
+    <div class="kpis k4 reveal" data-pages="geo">
+      <div class="kpi"><div class="top"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg></span>Стран</div><div class="val"><span data-count="32">0</span></div><div class="meta"><span class="delta up">↑ 4</span><span class="vs">за 30Д</span></div></div>
+      <div class="kpi"><div class="top"><span class="ico" style="background:#dbeafe;color:#2563eb"><svg viewBox="0 0 24 24"><path d="M3 12h18"/></svg></span>Топ-регион MRR</div><div class="val">$<span data-count="31420">0</span></div><div class="meta"><span class="delta up">↑ 18%</span><span class="vs">🇷🇺 Россия</span></div></div>
+      <div class="kpi"><div class="top"><span class="ico" style="background:#f3e8ff;color:#7c3aed"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/></svg></span>Растущий регион</div><div class="val">🇰🇿 <span data-count="42">0</span><small>%</small></div><div class="meta"><span class="delta up">↑ 42%</span><span class="vs">Казахстан 30Д</span></div></div>
+      <div class="kpi"><div class="top"><span class="ico" style="background:#fef3c7;color:#d97706"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/></svg></span>Главный город</div><div class="val">МСК</div><div class="meta"><span class="delta">2 140 юзеров</span><span class="vs">17.2% от RU</span></div></div>
+    </div>
+
+    <div class="reveal" data-pages="geo">
+      <section class="card">
+        <div class="card-h"><div><h3>Распределение юзеров по странам</h3><div class="sub">Карта мира · интенсивность по DAU</div></div></div>
+        <div class="map-wrap">
+          <svg viewBox="0 0 720 360" preserveAspectRatio="xMidYMid meet">
+            <rect width="720" height="360" fill="#f8fafc"/>
+            <!-- упрощённая стилизованная карта мира из прямоугольников и эллипсов -->
+            <ellipse cx="160" cy="240" rx="80" ry="60" class="country l1" title="ЮА"/>
+            <path class="country l2" d="M40 160 q20 -50 80 -60 q60 -10 100 20 q20 30 -10 50 q-30 20 -70 30 q-50 10 -80 10 q-30 0 -20 -50z"/>
+            <path class="country l4" d="M260 150 q40 -40 110 -45 q80 -5 110 25 q30 25 0 50 q-40 30 -120 35 q-80 5 -100 -15 q-20 -20 0 -50z"/>
+            <path class="country l5" d="M380 145 q50 -25 130 -22 q70 4 90 28 q15 22 -10 38 q-30 18 -100 22 q-80 4 -110 -12z" style="fill:#0f766e"/>
+            <path class="country l3" d="M460 200 q30 -20 90 -18 q50 2 70 18 q10 12 -10 22 q-30 14 -80 16 q-50 2 -70 -8z"/>
+            <ellipse cx="600" cy="280" rx="35" ry="22" class="country l2"/>
+            <ellipse cx="540" cy="260" rx="20" ry="14" class="country l1"/>
+            <ellipse cx="120" cy="100" rx="55" ry="22" class="country l1"/>
+            <ellipse cx="240" cy="240" rx="30" ry="20" class="country l1"/>
+            <path class="country l3" d="M350 220 q20 -10 50 -8 q25 2 30 10 q5 8 -10 14 q-25 8 -50 6 q-20 -2 -20 -10z"/>
+            <!-- city markers (top markets) -->
+            <circle cx="430" cy="125" r="7" fill="#ec4899" opacity=".85"/>
+            <circle cx="430" cy="125" r="14" fill="#ec4899" opacity=".25"/>
+            <text x="445" y="122" font-size="10" font-family="Inter" fill="#0b1822" font-weight="600">МСК · 2 140</text>
+            <circle cx="475" cy="155" r="5" fill="#06b6d4" opacity=".85"/>
+            <text x="485" y="158" font-size="9.5" font-family="Inter" fill="#0b1822" font-weight="600">Алматы · 1 240</text>
+            <circle cx="410" cy="150" r="4" fill="#8b5cf6" opacity=".85"/>
+            <text x="395" y="170" font-size="9.5" font-family="Inter" fill="#0b1822" font-weight="600">Минск · 890</text>
+            <circle cx="500" cy="170" r="3.5" fill="#f59e0b" opacity=".85"/>
+            <text x="510" y="173" font-size="9.5" font-family="Inter" fill="#0b1822" font-weight="600">Ташкент · 720</text>
+          </svg>
+        </div>
+        <div class="map-legend">
+          <span><i style="background:#ccfbf1"></i>1–50</span>
+          <span><i style="background:#5eead4"></i>50–500</span>
+          <span><i style="background:#14b8a6"></i>500–1500</span>
+          <span><i style="background:#0d9488"></i>1500–3000</span>
+          <span><i style="background:#0f766e"></i>3000+</span>
+        </div>
+      </section>
+    </div>
+
+    <div class="reveal" data-pages="geo">
+      <section class="card">
+        <div class="card-h">
+          <div><h3>Юзеры и MRR по странам</h3><div class="sub">Топ-12 регионов · 30Д</div></div>
+          <div class="tabs"><button class="on">Все</button><button>Рост</button><button>MRR</button></div>
+        </div>
+        <table class="tbl">
+          <thead><tr><th>Страна</th><th>Главный город</th><th class="r">Юзеров</th><th class="r">DAU</th><th class="r">MRR</th><th class="r">ARPU</th><th class="r">Рост 30Д</th></tr></thead>
+          <tbody>
+            <tr><td class="b">🇷🇺 Россия</td><td>Москва</td><td class="r">4 580</td><td class="r">1 248</td><td class="r">$31 420</td><td class="r">$28</td><td class="r"><span class="pill g">↑ 18%</span></td></tr>
+            <tr><td class="b">🇰🇿 Казахстан</td><td>Алматы</td><td class="r">2 780</td><td class="r">724</td><td class="r">$18 240</td><td class="r">$32</td><td class="r"><span class="pill g">↑ 42%</span></td></tr>
+            <tr><td class="b">🇧🇾 Беларусь</td><td>Минск</td><td class="r">1 890</td><td class="r">512</td><td class="r">$12 180</td><td class="r">$26</td><td class="r"><span class="pill g">↑ 24%</span></td></tr>
+            <tr><td class="b">🇺🇿 Узбекистан</td><td>Ташкент</td><td class="r">1 390</td><td class="r">348</td><td class="r">$7 820</td><td class="r">$22</td><td class="r"><span class="pill g">↑ 36%</span></td></tr>
+            <tr><td class="b">🇦🇲 Армения</td><td>Ереван</td><td class="r">890</td><td class="r">242</td><td class="r">$6 420</td><td class="r">$36</td><td class="r"><span class="pill g">↑ 28%</span></td></tr>
+            <tr><td class="b">🇬🇪 Грузия</td><td>Тбилиси</td><td class="r">420</td><td class="r">118</td><td class="r">$3 240</td><td class="r">$34</td><td class="r"><span class="pill g">↑ 18%</span></td></tr>
+            <tr><td class="b">🇰🇬 Кыргызстан</td><td>Бишкек</td><td class="r">180</td><td class="r">42</td><td class="r">$1 280</td><td class="r">$26</td><td class="r"><span class="pill g">↑ 22%</span></td></tr>
+            <tr><td class="b">🇩🇪 Германия</td><td>Берлин</td><td class="r">142</td><td class="r">38</td><td class="r">$1 980</td><td class="r">$42</td><td class="r"><span class="pill g">↑ 8%</span></td></tr>
+            <tr><td class="b">🇮🇱 Израиль</td><td>Тель-Авив</td><td class="r">98</td><td class="r">28</td><td class="r">$1 420</td><td class="r">$48</td><td class="r"><span class="pill g">↑ 12%</span></td></tr>
+            <tr><td class="b">🇨🇾 Кипр</td><td>Лимасол</td><td class="r">62</td><td class="r">18</td><td class="r">$948</td><td class="r">$44</td><td class="r"><span class="pill g">↑ 14%</span></td></tr>
+            <tr><td class="b">🇦🇪 ОАЭ</td><td>Дубай</td><td class="r">48</td><td class="r">12</td><td class="r">$720</td><td class="r">$46</td><td class="r"><span class="pill a">↑ 4%</span></td></tr>
+            <tr><td class="b">Другие (21 страна)</td><td>—</td><td class="r">22</td><td class="r">6</td><td class="r">$340</td><td class="r">$28</td><td class="r"><span class="pill a">—</span></td></tr>
+          </tbody>
         </table>
       </section>
     </div>
@@ -640,6 +972,13 @@ a{color:inherit;text-decoration:none}
           <div class="exp-var"><div class="name">«Получить демо»</div><div class="conv">3.5%</div><div class="delta" style="color:var(--mut)">+2.9% · p=0.42</div></div>
         </div>
       </div>
+      <div class="exp-card">
+        <div class="head"><div><h4>Email-онбординг: 3 письма vs 7 писем</h4><small>Запущен 10.06.2026 · 8 дней · 3 240 юзеров</small></div><span class="pill running">● Запущен</span></div>
+        <div class="exp-bars">
+          <div class="exp-var"><div class="name">Control · 3 письма</div><div class="conv">21.4%</div><div class="delta" style="color:var(--mut)">D7 retention</div></div>
+          <div class="exp-var win"><div class="name">Вариант B · 7 писем</div><div class="conv">26.8%</div><div class="delta">+25.2% к base · p=0.04</div></div>
+        </div>
+      </div>
     </div>
 
     <!-- Integrations page -->
@@ -661,45 +1000,13 @@ a{color:inherit;text-decoration:none}
     <div class="reveal" data-pages="settings">
       <div class="settings-card">
         <h3>Профиль и команда</h3>
-        <div class="set-row">
-          <div class="lbl"><b>Имя</b>Отображается в команде</div>
-          <input type="text" value="Mark K.">
-        </div>
-        <div class="set-row">
-          <div class="lbl"><b>Email</b>Для логина и уведомлений</div>
-          <input type="email" value="mark@lumen-team.io">
-        </div>
-        <div class="set-row">
-          <div class="lbl"><b>Часовой пояс</b>Время в отчётах</div>
-          <select><option>(UTC+7) Томск</option><option>(UTC+3) Москва</option><option>(UTC+0) UTC</option></select>
-        </div>
-        <div class="set-row">
-          <div class="lbl"><b>Email-уведомления</b>Дайджест каждое утро</div>
-          <label class="toggle"><input type="checkbox" checked><span class="switch"></span></label>
-        </div>
-        <div class="set-row">
-          <div class="lbl"><b>Slack-алерты</b>При резком оттоке или падении MRR</div>
-          <label class="toggle"><input type="checkbox" checked><span class="switch"></span></label>
-        </div>
-        <div class="set-row">
-          <div class="lbl"><b>2FA</b>Двухфакторная аутентификация</div>
-          <label class="toggle"><input type="checkbox"><span class="switch"></span></label>
-        </div>
-        <div class="set-actions">
-          <button class="btn btn-ghost">Отмена</button>
-          <button class="btn btn-pri">Сохранить</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Empty state placeholder (shown dynamically by JS for slugs without content) -->
-    <div class="empty reveal" id="empty-state" style="display:none">
-      <div class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg></div>
-      <h2 id="empty-title">Раздел в разработке</h2>
-      <p id="empty-desc">Здесь будет полный функционал этого раздела. Пока что доступен в виде MVP-демо — в продакшн-версии все блоки будут активны.</p>
-      <div class="actions">
-        <button class="btn btn-ghost" onclick="goTo('overview')">← Вернуться к обзору</button>
-        <button class="btn btn-pri">Запросить раздел</button>
+        <div class="set-row"><div class="lbl"><b>Имя</b>Отображается в команде</div><input type="text" value="Mark K."></div>
+        <div class="set-row"><div class="lbl"><b>Email</b>Для логина и уведомлений</div><input type="email" value="mark@lumen-team.io"></div>
+        <div class="set-row"><div class="lbl"><b>Часовой пояс</b>Время в отчётах</div><select><option>(UTC+7) Томск</option><option>(UTC+3) Москва</option><option>(UTC+0) UTC</option></select></div>
+        <div class="set-row"><div class="lbl"><b>Email-уведомления</b>Дайджест каждое утро</div><label class="toggle"><input type="checkbox" checked><span class="switch"></span></label></div>
+        <div class="set-row"><div class="lbl"><b>Slack-алерты</b>При резком оттоке или падении MRR</div><label class="toggle"><input type="checkbox" checked><span class="switch"></span></label></div>
+        <div class="set-row"><div class="lbl"><b>2FA</b>Двухфакторная аутентификация</div><label class="toggle"><input type="checkbox"><span class="switch"></span></label></div>
+        <div class="set-actions"><button class="btn btn-ghost">Отмена</button><button class="btn btn-pri">Сохранить</button></div>
       </div>
     </div>
 
@@ -724,75 +1031,52 @@ function animateCount(el){
 }
 function revealNow(scope){
   scope.querySelectorAll('.reveal').forEach(function(el){
+    if(el.style.display==='none')return;
     el.classList.add('in');
     el.querySelectorAll('[data-count]').forEach(animateCount);
-    el.querySelectorAll('.funnel-bar i[data-w]').forEach(function(i){setTimeout(function(){i.style.width=i.dataset.w+'%'},120)});
+    el.querySelectorAll('.funnel-bar i[data-w], .bar-row .track i[data-w], .nps-row .bar i[data-w]').forEach(function(i){setTimeout(function(){i.style.width=i.dataset.w+'%'},120)});
   });
 }
 
-// page meta per slug
 var PAGES={
   overview:{title:'Обзор продукта',greet:'Последние 30 дней · обновлено сейчас · <b>+18% MRR</b> к прошлому периоду',crumb:'Обзор'},
-  acquisition:{title:'Привлечение',greet:'Каналы трафика, конверсии и стоимость лида · 30Д',crumb:'Привлечение'},
-  retention:{title:'Удержание',greet:'Когортная аналитика и причины оттока · обновлено сейчас',crumb:'Удержание'},
-  funnels:{title:'Воронки конверсии',greet:'Путь юзера от первого визита до платной подписки',crumb:'Воронки'},
-  cohorts:{title:'Когортная аналитика',greet:'Retention по месяцам регистрации, тренды',crumb:'Когорты'},
-  geo:{title:'География',greet:'Распределение юзеров и MRR по странам',crumb:'География'},
+  acquisition:{title:'Привлечение',greet:'Каналы трафика, UTM-разбивка и CAC по источникам · 30Д',crumb:'Привлечение'},
+  retention:{title:'Удержание',greet:'Причины оттока, NPS и win-back · обновлено сейчас',crumb:'Удержание'},
+  funnels:{title:'Воронки конверсии',greet:'Signup, активация, trial → paid, upgrade',crumb:'Воронки'},
+  cohorts:{title:'Когортная аналитика',greet:'Retention по неделям регистрации, retention curves',crumb:'Когорты'},
+  geo:{title:'География',greet:'Карта мира, MRR и ARPU по странам',crumb:'География'},
   reports:{title:'Отчёты',greet:'Сохранённые и автоматические отчёты команды',crumb:'Отчёты'},
   experiments:{title:'A/B-эксперименты',greet:'Активные тесты и результаты завершённых',crumb:'Эксперименты'},
   integrations:{title:'Интеграции',greet:'Подключённые внешние сервисы и API',crumb:'Интеграции'},
   settings:{title:'Настройки',greet:'Профиль, уведомления, безопасность',crumb:'Настройки'}
 };
-var EMPTY_DESC={
-  reports:'Все сохранённые отчёты команды с авто-рассылкой и BI-дашбордами.',
-  experiments:'Текущие A/B-тесты с метрикой эффекта и доверительными интервалами.',
-  integrations:'Slack, Telegram, GA4, Stripe, Segment, Webhook — всё, что нужно для сквозной аналитики.'
-};
 
 function goTo(slug){
   if(!PAGES[slug])slug='overview';
-  // active nav
   document.querySelectorAll('.side .nav').forEach(function(a){a.classList.toggle('on',a.dataset.slug===slug)});
-  // sections
-  var anyShown=false;
   document.querySelectorAll('[data-pages]').forEach(function(sec){
     var on=sec.dataset.pages.split(/\s+/).indexOf(slug)>=0;
     sec.style.display=on?'':'none';
-    if(on)anyShown=true;
   });
-  // empty state for slugs without content
-  var emp=document.getElementById('empty-state');
-  if(!anyShown){
-    emp.style.display='';
-    document.getElementById('empty-title').textContent=PAGES[slug].title+' — в разработке';
-    document.getElementById('empty-desc').textContent=EMPTY_DESC[slug]||'Этот раздел будет доступен в продакшн-версии. В демо показан как заглушка с описанием функционала.';
-  }else{
-    emp.style.display='none';
-  }
-  // head
   var head=document.querySelector('.page-head h1');if(head)head.textContent=PAGES[slug].title;
   var greet=document.querySelector('.page-head .greet');if(greet)greet.innerHTML=PAGES[slug].greet;
   var crumb=document.querySelector('.crumb b');if(crumb)crumb.textContent=PAGES[slug].crumb;
   document.title='Lumen · '+PAGES[slug].title;
-  // persist + url
   try{localStorage.setItem('lumen.page',slug)}catch(e){}
   if(location.hash.replace('#','')!==slug){history.replaceState(null,'','#'+slug)}
-  // re-trigger reveal animations
   document.querySelectorAll('.reveal').forEach(function(el){
     el.classList.remove('in');
     el.querySelectorAll('[data-count]').forEach(function(c){c.dataset.done='';c.textContent='0'});
-    el.querySelectorAll('.funnel-bar i[data-w]').forEach(function(i){i.style.width='0'});
+    el.querySelectorAll('.funnel-bar i[data-w], .bar-row .track i[data-w], .nps-row .bar i[data-w]').forEach(function(i){i.style.width='0'});
   });
   setTimeout(function(){revealNow(document)},40);
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
-// nav clicks
 document.querySelectorAll('.side .nav').forEach(function(a){
   a.addEventListener('click',function(e){e.preventDefault();goTo(a.dataset.slug)});
 });
 
-// period + tabs interactivity (purely local toggle within their group)
 document.querySelectorAll('.period button, .tabs button').forEach(function(b){
   b.addEventListener('click',function(){
     var siblings=b.parentNode.querySelectorAll('button');
@@ -801,12 +1085,10 @@ document.querySelectorAll('.period button, .tabs button').forEach(function(b){
   });
 });
 
-// hash sync (deep-link)
 window.addEventListener('hashchange',function(){
   var s=(location.hash||'').replace('#','');
   if(PAGES[s])goTo(s);
 });
-// boot: prefer URL hash → localStorage → overview
 var initial='overview';
 var hash=(location.hash||'').replace('#','');
 if(hash&&PAGES[hash])initial=hash;
