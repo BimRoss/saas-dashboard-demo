@@ -225,6 +225,72 @@ a{color:inherit;text-decoration:none}
 .reveal{opacity:0;transform:translateY(10px);transition:opacity .65s cubic-bezier(.2,.7,.2,1),transform .65s cubic-bezier(.2,.7,.2,1)}
 .reveal.in{opacity:1;transform:none}
 
+/* empty state for sections under development */
+.empty{background:#fff;border:1px solid var(--border);border-radius:13px;padding:56px 32px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:16px}
+.empty .ico{width:72px;height:72px;border-radius:18px;background:linear-gradient(135deg,#ccfbf1,#5eead4);display:grid;place-items:center;color:var(--accent-2)}
+.empty .ico svg{width:32px;height:32px;stroke:currentColor;stroke-width:1.8;fill:none}
+.empty h2{font-size:20px;font-weight:700;letter-spacing:-.025em;margin-top:4px}
+.empty p{color:var(--mut);font-size:14px;max-width:480px;line-height:1.55}
+.empty .actions{display:flex;gap:10px;margin-top:6px}
+
+/* settings form */
+.settings-card{background:#fff;border:1px solid var(--border);border-radius:13px;padding:24px 26px;max-width:680px}
+.settings-card h3{font-size:17px;font-weight:700;margin-bottom:18px;letter-spacing:-.02em}
+.set-row{display:grid;grid-template-columns:200px 1fr;gap:18px;padding:14px 0;border-bottom:1px solid var(--border);align-items:center}
+.set-row:last-of-type{border-bottom:none}
+.set-row .lbl{font-size:13px;color:var(--mut);font-weight:500}
+.set-row .lbl b{display:block;color:var(--ink);font-weight:600;font-size:14px;margin-bottom:2px}
+.set-row input,.set-row select{width:100%;background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13.5px;color:var(--ink)}
+.set-row input:focus,.set-row select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
+.toggle{display:inline-flex;align-items:center;gap:10px;cursor:pointer}
+.toggle input{display:none}
+.toggle .switch{width:38px;height:22px;border-radius:100px;background:var(--border-strong);position:relative;transition:.2s}
+.toggle .switch::after{content:"";position:absolute;left:2px;top:2px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:var(--shadow-sm);transition:.2s}
+.toggle input:checked + .switch{background:var(--accent)}
+.toggle input:checked + .switch::after{transform:translateX(16px)}
+.set-actions{display:flex;gap:10px;margin-top:18px;justify-content:flex-end}
+
+/* reports list */
+.reports-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:1100px){.reports-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:760px){.reports-grid{grid-template-columns:1fr}}
+.rep-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:18px;cursor:pointer;transition:.2s}
+.rep-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.rep-card .ico{width:34px;height:34px;border-radius:9px;background:var(--accent-soft);color:var(--accent-2);display:grid;place-items:center;margin-bottom:12px}
+.rep-card .ico svg{width:18px;height:18px;stroke:currentColor;stroke-width:1.8;fill:none}
+.rep-card b{font-size:14px;font-weight:600;letter-spacing:-.01em;display:block}
+.rep-card small{font-size:11.5px;color:var(--mut);display:block;margin-top:4px}
+.rep-card .meta{font-size:11.5px;color:var(--faint);margin-top:14px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border);padding-top:10px}
+
+/* experiments */
+.exp-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:12px}
+.exp-card .head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.exp-card h4{font-size:14.5px;font-weight:600;letter-spacing:-.01em}
+.exp-card .head small{font-size:11.5px;color:var(--mut);display:block;margin-top:2px}
+.exp-card .pill{font-size:11px;font-weight:600;padding:3px 9px;border-radius:100px}
+.exp-card .pill.running{background:var(--accent-soft);color:var(--accent-2)}
+.exp-card .pill.won{background:var(--green-soft);color:var(--green)}
+.exp-card .pill.lost{background:var(--red-soft);color:var(--red)}
+.exp-bars{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.exp-var{background:var(--bg);padding:12px;border-radius:9px}
+.exp-var .name{font-size:11px;color:var(--mut);font-weight:600;letter-spacing:.03em;text-transform:uppercase}
+.exp-var .conv{font-size:20px;font-weight:700;letter-spacing:-.025em;font-family:var(--mono);margin-top:4px}
+.exp-var .delta{font-size:11.5px;font-weight:600;color:var(--green);margin-top:2px}
+.exp-var.win{background:var(--green-soft)}
+.exp-var.win .delta{color:var(--green)}
+
+/* integrations */
+.int-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:1100px){.int-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:760px){.int-grid{grid-template-columns:1fr}}
+.int-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:18px;display:flex;align-items:center;gap:14px}
+.int-logo{width:42px;height:42px;border-radius:10px;display:grid;place-items:center;color:#fff;font-weight:700;font-size:14px;font-family:var(--mono);flex:none}
+.int-card .info{flex:1;min-width:0}
+.int-card b{font-size:13.5px;font-weight:600;display:block;letter-spacing:-.01em}
+.int-card small{font-size:11.5px;color:var(--mut);display:block;margin-top:2px}
+.int-card .status{font-size:11px;font-weight:600;padding:3px 9px;border-radius:100px;background:var(--green-soft);color:var(--green);flex:none}
+.int-card .status.off{background:var(--bg);color:var(--mut)}
+
 .foot{padding:18px 28px;color:var(--mut);font-size:12.5px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;border-top:1px solid var(--border);background:#fff}
 .foot a{color:var(--accent-2);font-weight:500}
 
@@ -246,17 +312,17 @@ a{color:inherit;text-decoration:none}
     <div>Lumen<small>analytics</small></div>
   </div>
   <div class="lbl">Аналитика</div>
-  <a class="nav on"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Обзор</a>
-  <a class="nav"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8M21 7v5h-5"/></svg>Привлечение</a>
-  <a class="nav"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5"/><circle cx="18" cy="9" r="2"/></svg>Удержание<span class="pill">new</span></a>
-  <a class="nav"><svg viewBox="0 0 24 24"><path d="M3 3h18v4H3zM6 7v14h12V7"/></svg>Воронки</a>
-  <a class="nav"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg>Когорты</a>
-  <a class="nav"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2c2.5 3 4 7 4 10s-1.5 7-4 10c-2.5-3-4-7-4-10s1.5-7 4-10z"/></svg>География</a>
+  <a class="nav on" data-slug="overview" href="#overview"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Обзор</a>
+  <a class="nav" data-slug="acquisition" href="#acquisition"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8M21 7v5h-5"/></svg>Привлечение</a>
+  <a class="nav" data-slug="retention" href="#retention"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5"/><circle cx="18" cy="9" r="2"/></svg>Удержание<span class="pill">new</span></a>
+  <a class="nav" data-slug="funnels" href="#funnels"><svg viewBox="0 0 24 24"><path d="M3 3h18v4H3zM6 7v14h12V7"/></svg>Воронки</a>
+  <a class="nav" data-slug="cohorts" href="#cohorts"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg>Когорты</a>
+  <a class="nav" data-slug="geo" href="#geo"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2c2.5 3 4 7 4 10s-1.5 7-4 10c-2.5-3-4-7-4-10s1.5-7 4-10z"/></svg>География</a>
   <div class="lbl">Управление</div>
-  <a class="nav"><svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6"/></svg>Отчёты</a>
-  <a class="nav"><svg viewBox="0 0 24 24"><path d="M4 17l6-6 4 4 8-8M21 7v5h-5"/></svg>Эксперименты</a>
-  <a class="nav"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7 0l4-4a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-4 4a5 5 0 0 0 7 7l1-1"/></svg>Интеграции</a>
-  <a class="nav"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.6-2-3.4-2.4 1a7 7 0 0 0-1.7-1L16.5 2h-4l-.3 2.6a7 7 0 0 0-1.7 1l-2.4-1-2 3.4L5.1 11a7 7 0 0 0 0 2l-2 1.6 2 3.4 2.4-1a7 7 0 0 0 1.7 1l.3 2.6h4l.3-2.6a7 7 0 0 0 1.7-1l2.4 1 2-3.4-2-1.6a7 7 0 0 0 .1-1z"/></svg>Настройки</a>
+  <a class="nav" data-slug="reports" href="#reports"><svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6"/></svg>Отчёты</a>
+  <a class="nav" data-slug="experiments" href="#experiments"><svg viewBox="0 0 24 24"><path d="M4 17l6-6 4 4 8-8M21 7v5h-5"/></svg>Эксперименты</a>
+  <a class="nav" data-slug="integrations" href="#integrations"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7 0l4-4a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-4 4a5 5 0 0 0 7 7l1-1"/></svg>Интеграции</a>
+  <a class="nav" data-slug="settings" href="#settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.6-2-3.4-2.4 1a7 7 0 0 0-1.7-1L16.5 2h-4l-.3 2.6a7 7 0 0 0-1.7 1l-2.4-1-2 3.4L5.1 11a7 7 0 0 0 0 2l-2 1.6 2 3.4 2.4-1a7 7 0 0 0 1.7 1l.3 2.6h4l.3-2.6a7 7 0 0 0 1.7-1l2.4 1 2-3.4-2-1.6a7 7 0 0 0 .1-1z"/></svg>Настройки</a>
   <div class="foot">
     <div class="upgrade">
       <b>Pro-тариф</b>
@@ -302,7 +368,7 @@ a{color:inherit;text-decoration:none}
     </div>
 
     <!-- KPI strip -->
-    <div class="kpis reveal">
+    <div class="kpis reveal" data-pages="overview acquisition retention funnels">
       <div class="kpi">
         <div class="top"><span class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg></span>MRR</div>
         <div class="val">$<span data-count="84320">0</span></div>
@@ -336,7 +402,7 @@ a{color:inherit;text-decoration:none}
     </div>
 
     <!-- BIG CHART + FUNNEL -->
-    <div class="grid-2 reveal">
+    <div class="grid-2 reveal" data-pages="overview acquisition funnels">
       <section class="card chart-card">
         <div class="card-h">
           <div>
@@ -421,7 +487,7 @@ a{color:inherit;text-decoration:none}
     </div>
 
     <!-- COHORT + GEO + ACTIVITY -->
-    <div class="grid-3 reveal">
+    <div class="grid-3 reveal" data-pages="overview retention cohorts geo">
       <section class="card">
         <div class="card-h"><div><h3>Когортная аналитика</h3><div class="sub">Retention по месяцам регистрации</div></div></div>
         <div class="cohort">
@@ -494,7 +560,7 @@ a{color:inherit;text-decoration:none}
     </div>
 
     <!-- CHANNELS -->
-    <div class="reveal">
+    <div class="reveal" data-pages="overview acquisition">
       <section class="card">
         <div class="card-h">
           <div><h3>Топ каналов привлечения</h3><div class="sub">Источник → регистрации → платные · 30Д</div></div>
@@ -544,6 +610,104 @@ a{color:inherit;text-decoration:none}
       </section>
     </div>
 
+    <!-- Reports page -->
+    <div class="reveal" data-pages="reports">
+      <div class="reports-grid">
+        <div class="rep-card"><div class="ico"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8M21 7v5h-5"/></svg></div><b>Еженедельный MRR</b><small>Выручка, расширения, churn по неделям</small><div class="meta">Автоотправка · понедельник<span>📧 → команда</span></div></div>
+        <div class="rep-card"><div class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg></div><b>Когорты по каналам</b><small>Retention в разрезе источников трафика</small><div class="meta">По запросу<span>📊 BI-дашборд</span></div></div>
+        <div class="rep-card"><div class="ico"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5"/></svg></div><b>Churn-анализ</b><small>Кто и почему отвалился за месяц</small><div class="meta">Автоотправка · 1-е число<span>📧 → CEO</span></div></div>
+        <div class="rep-card"><div class="ico"><svg viewBox="0 0 24 24"><path d="M3 3h18v4H3zM6 7v14h12V7"/></svg></div><b>Воронка signup → paid</b><small>Конверсия на каждом шаге, drop-off</small><div class="meta">Ежедневно · 09:00<span>📧 → growth</span></div></div>
+        <div class="rep-card"><div class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/></svg></div><b>География юзеров</b><small>Распределение DAU по странам + рост</small><div class="meta">Еженедельно<span>📊 BI</span></div></div>
+        <div class="rep-card"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div><b>+ Создать новый отчёт</b><small>На основе любого графика или метрики</small><div class="meta">Шаблон или с нуля<span style="color:var(--accent-2);font-weight:600">Начать →</span></div></div>
+      </div>
+    </div>
+
+    <!-- Experiments page -->
+    <div class="reveal" data-pages="experiments">
+      <div class="exp-card">
+        <div class="head"><div><h4>Новый онбординг с видео-туром</h4><small>Запущен 14.06.2026 · 4 дня · 2 480 юзеров</small></div><span class="pill running">● Запущен</span></div>
+        <div class="exp-bars">
+          <div class="exp-var"><div class="name">Control</div><div class="conv">11.2%</div><div class="delta" style="color:var(--mut)">base</div></div>
+          <div class="exp-var win"><div class="name">Вариант A · видео</div><div class="conv">14.8%</div><div class="delta">+32.1% к base · p=0.03</div></div>
+        </div>
+      </div>
+      <div class="exp-card">
+        <div class="head"><div><h4>Pricing: $19/29/49 vs $24/39/59</h4><small>Запущен 06.06.2026 · 12 дней · 4 120 юзеров</small></div><span class="pill won">★ Победитель</span></div>
+        <div class="exp-bars">
+          <div class="exp-var"><div class="name">Control · текущий</div><div class="conv">$32 ARPU</div><div class="delta" style="color:var(--mut)">base</div></div>
+          <div class="exp-var win"><div class="name">Вариант B · выше цены</div><div class="conv">$41 ARPU</div><div class="delta">+28% к base · p<0.01</div></div>
+        </div>
+      </div>
+      <div class="exp-card">
+        <div class="head"><div><h4>CTA на лендинге: «Попробовать» vs «Получить демо»</h4><small>Завершён 28.05.2026 · 14 дней · 18 240 юзеров</small></div><span class="pill lost">— Без эффекта</span></div>
+        <div class="exp-bars">
+          <div class="exp-var"><div class="name">«Попробовать бесплатно»</div><div class="conv">3.4%</div><div class="delta" style="color:var(--mut)">base</div></div>
+          <div class="exp-var"><div class="name">«Получить демо»</div><div class="conv">3.5%</div><div class="delta" style="color:var(--mut)">+2.9% · p=0.42</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Integrations page -->
+    <div class="reveal" data-pages="integrations">
+      <div class="int-grid">
+        <div class="int-card"><span class="int-logo" style="background:linear-gradient(135deg,#4a154b,#2d0c2f)">SL</span><div class="info"><b>Slack</b><small>Уведомления по метрикам и алерты</small></div><span class="status">Активно</span></div>
+        <div class="int-card"><span class="int-logo" style="background:linear-gradient(135deg,#229ed9,#1c8bc4)">TG</span><div class="info"><b>Telegram Bot</b><small>Daily digest в команду</small></div><span class="status">Активно</span></div>
+        <div class="int-card"><span class="int-logo" style="background:linear-gradient(135deg,#a3a3a3,#525252)">GA</span><div class="info"><b>Google Analytics 4</b><small>Импорт сессий и каналов</small></div><span class="status">Активно</span></div>
+        <div class="int-card"><span class="int-logo" style="background:linear-gradient(135deg,#6772e5,#4f54c8)">ST</span><div class="info"><b>Stripe</b><small>Биллинг и MRR в реалтайме</small></div><span class="status">Активно</span></div>
+        <div class="int-card"><span class="int-logo" style="background:linear-gradient(135deg,#ff7849,#dc2626)">SE</span><div class="info"><b>Segment</b><small>Сбор продуктовых событий</small></div><span class="status off">Отключено</span></div>
+        <div class="int-card"><span class="int-logo" style="background:linear-gradient(135deg,#0073e6,#0052b3)">IN</span><div class="info"><b>Intercom</b><small>Чат-сессии и NPS</small></div><span class="status off">Отключено</span></div>
+        <div class="int-card"><span class="int-logo" style="background:linear-gradient(135deg,#0d9488,#0f766e)">WH</span><div class="info"><b>Webhook</b><small>Произвольный HTTP-эндпоинт</small></div><span class="status">Активно</span></div>
+        <div class="int-card"><span class="int-logo" style="background:linear-gradient(135deg,#ffd600,#f5b800);color:#000">ZP</span><div class="info"><b>Zapier</b><small>2000+ автоматизаций</small></div><span class="status off">Отключено</span></div>
+        <div class="int-card" style="border-style:dashed;justify-content:center"><span style="color:var(--accent-2);font-weight:600">+ Добавить интеграцию</span></div>
+      </div>
+    </div>
+
+    <!-- Settings page -->
+    <div class="reveal" data-pages="settings">
+      <div class="settings-card">
+        <h3>Профиль и команда</h3>
+        <div class="set-row">
+          <div class="lbl"><b>Имя</b>Отображается в команде</div>
+          <input type="text" value="Mark K.">
+        </div>
+        <div class="set-row">
+          <div class="lbl"><b>Email</b>Для логина и уведомлений</div>
+          <input type="email" value="mark@lumen-team.io">
+        </div>
+        <div class="set-row">
+          <div class="lbl"><b>Часовой пояс</b>Время в отчётах</div>
+          <select><option>(UTC+7) Томск</option><option>(UTC+3) Москва</option><option>(UTC+0) UTC</option></select>
+        </div>
+        <div class="set-row">
+          <div class="lbl"><b>Email-уведомления</b>Дайджест каждое утро</div>
+          <label class="toggle"><input type="checkbox" checked><span class="switch"></span></label>
+        </div>
+        <div class="set-row">
+          <div class="lbl"><b>Slack-алерты</b>При резком оттоке или падении MRR</div>
+          <label class="toggle"><input type="checkbox" checked><span class="switch"></span></label>
+        </div>
+        <div class="set-row">
+          <div class="lbl"><b>2FA</b>Двухфакторная аутентификация</div>
+          <label class="toggle"><input type="checkbox"><span class="switch"></span></label>
+        </div>
+        <div class="set-actions">
+          <button class="btn btn-ghost">Отмена</button>
+          <button class="btn btn-pri">Сохранить</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty state placeholder (shown dynamically by JS for slugs without content) -->
+    <div class="empty reveal" id="empty-state" style="display:none">
+      <div class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg></div>
+      <h2 id="empty-title">Раздел в разработке</h2>
+      <p id="empty-desc">Здесь будет полный функционал этого раздела. Пока что доступен в виде MVP-демо — в продакшн-версии все блоки будут активны.</p>
+      <div class="actions">
+        <button class="btn btn-ghost" onclick="goTo('overview')">← Вернуться к обзору</button>
+        <button class="btn btn-pri">Запросить раздел</button>
+      </div>
+    </div>
+
     <footer class="foot">
       <div>© 2026 Lumen Analytics · Демонстрационный проект для портфолио · Все данные сгенерированы</div>
       <div>Stack: HTML5 · CSS3 (Grid + Flex) · vanilla JS · SVG-графики · без зависимостей</div>
@@ -555,6 +719,7 @@ a{color:inherit;text-decoration:none}
 
 <script>
 function animateCount(el){
+  if(el.dataset.done)return;el.dataset.done=1;
   var to=parseFloat(el.dataset.count),dec=parseInt(el.dataset.dec||0,10),t0=null,dur=1100;
   function step(ts){if(!t0)t0=ts;var p=Math.min(1,(ts-t0)/dur);var e=1-Math.pow(1-p,3);
     var v=to*e;
@@ -562,18 +727,77 @@ function animateCount(el){
     if(p<1)requestAnimationFrame(step);else el.textContent=dec?to.toFixed(dec).replace('.',','):to.toLocaleString('ru-RU');}
   requestAnimationFrame(step);
 }
-var io=new IntersectionObserver(function(ents){
-  ents.forEach(function(en){
-    if(!en.isIntersecting)return;
-    en.target.classList.add('in');
-    en.target.querySelectorAll('[data-count]').forEach(animateCount);
-    en.target.querySelectorAll('.funnel-bar i[data-w]').forEach(function(i){setTimeout(function(){i.style.width=i.dataset.w+'%'},120)});
-    io.unobserve(en.target);
+function revealNow(scope){
+  scope.querySelectorAll('.reveal').forEach(function(el){
+    el.classList.add('in');
+    el.querySelectorAll('[data-count]').forEach(animateCount);
+    el.querySelectorAll('.funnel-bar i[data-w]').forEach(function(i){setTimeout(function(){i.style.width=i.dataset.w+'%'},120)});
   });
-},{threshold:.12});
-document.querySelectorAll('.reveal').forEach(function(el){io.observe(el)});
+}
 
-// period selector
+// page meta per slug
+var PAGES={
+  overview:{title:'Обзор продукта',greet:'Последние 30 дней · обновлено сейчас · <b>+18% MRR</b> к прошлому периоду',crumb:'Обзор'},
+  acquisition:{title:'Привлечение',greet:'Каналы трафика, конверсии и стоимость лида · 30Д',crumb:'Привлечение'},
+  retention:{title:'Удержание',greet:'Когортная аналитика и причины оттока · обновлено сейчас',crumb:'Удержание'},
+  funnels:{title:'Воронки конверсии',greet:'Путь юзера от первого визита до платной подписки',crumb:'Воронки'},
+  cohorts:{title:'Когортная аналитика',greet:'Retention по месяцам регистрации, тренды',crumb:'Когорты'},
+  geo:{title:'География',greet:'Распределение юзеров и MRR по странам',crumb:'География'},
+  reports:{title:'Отчёты',greet:'Сохранённые и автоматические отчёты команды',crumb:'Отчёты'},
+  experiments:{title:'A/B-эксперименты',greet:'Активные тесты и результаты завершённых',crumb:'Эксперименты'},
+  integrations:{title:'Интеграции',greet:'Подключённые внешние сервисы и API',crumb:'Интеграции'},
+  settings:{title:'Настройки',greet:'Профиль, уведомления, безопасность',crumb:'Настройки'}
+};
+var EMPTY_DESC={
+  reports:'Все сохранённые отчёты команды с авто-рассылкой и BI-дашбордами.',
+  experiments:'Текущие A/B-тесты с метрикой эффекта и доверительными интервалами.',
+  integrations:'Slack, Telegram, GA4, Stripe, Segment, Webhook — всё, что нужно для сквозной аналитики.'
+};
+
+function goTo(slug){
+  if(!PAGES[slug])slug='overview';
+  // active nav
+  document.querySelectorAll('.side .nav').forEach(function(a){a.classList.toggle('on',a.dataset.slug===slug)});
+  // sections
+  var anyShown=false;
+  document.querySelectorAll('[data-pages]').forEach(function(sec){
+    var on=sec.dataset.pages.split(/\s+/).indexOf(slug)>=0;
+    sec.style.display=on?'':'none';
+    if(on)anyShown=true;
+  });
+  // empty state for slugs without content
+  var emp=document.getElementById('empty-state');
+  if(!anyShown){
+    emp.style.display='';
+    document.getElementById('empty-title').textContent=PAGES[slug].title+' — в разработке';
+    document.getElementById('empty-desc').textContent=EMPTY_DESC[slug]||'Этот раздел будет доступен в продакшн-версии. В демо показан как заглушка с описанием функционала.';
+  }else{
+    emp.style.display='none';
+  }
+  // head
+  var head=document.querySelector('.page-head h1');if(head)head.textContent=PAGES[slug].title;
+  var greet=document.querySelector('.page-head .greet');if(greet)greet.innerHTML=PAGES[slug].greet;
+  var crumb=document.querySelector('.crumb b');if(crumb)crumb.textContent=PAGES[slug].crumb;
+  document.title='Lumen · '+PAGES[slug].title;
+  // persist + url
+  try{localStorage.setItem('lumen.page',slug)}catch(e){}
+  if(location.hash.replace('#','')!==slug){history.replaceState(null,'','#'+slug)}
+  // re-trigger reveal animations
+  document.querySelectorAll('.reveal').forEach(function(el){
+    el.classList.remove('in');
+    el.querySelectorAll('[data-count]').forEach(function(c){c.dataset.done='';c.textContent='0'});
+    el.querySelectorAll('.funnel-bar i[data-w]').forEach(function(i){i.style.width='0'});
+  });
+  setTimeout(function(){revealNow(document)},40);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// nav clicks
+document.querySelectorAll('.side .nav').forEach(function(a){
+  a.addEventListener('click',function(e){e.preventDefault();goTo(a.dataset.slug)});
+});
+
+// period + tabs interactivity (purely local toggle within their group)
 document.querySelectorAll('.period button, .tabs button').forEach(function(b){
   b.addEventListener('click',function(){
     var siblings=b.parentNode.querySelectorAll('button');
@@ -581,6 +805,18 @@ document.querySelectorAll('.period button, .tabs button').forEach(function(b){
     b.classList.add('on');
   });
 });
+
+// hash sync (deep-link)
+window.addEventListener('hashchange',function(){
+  var s=(location.hash||'').replace('#','');
+  if(PAGES[s])goTo(s);
+});
+// boot: prefer URL hash → localStorage → overview
+var initial='overview';
+var hash=(location.hash||'').replace('#','');
+if(hash&&PAGES[hash])initial=hash;
+else{try{var saved=localStorage.getItem('lumen.page');if(saved&&PAGES[saved])initial=saved}catch(e){}}
+goTo(initial);
 </script>
 </body>
 </html>
