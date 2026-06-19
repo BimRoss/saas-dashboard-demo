@@ -147,6 +147,13 @@ a{color:inherit;text-decoration:none}
 .chart-wrap svg{width:100%;height:240px;display:block;overflow:visible}
 .chart-wrap.tall svg{height:300px}
 .chart-x{display:flex;justify-content:space-between;font-size:10.5px;color:var(--faint);padding:6px 8px 0;font-family:var(--mono)}
+.chart-tooltip{position:absolute;top:8px;padding:10px 12px;background:#0b1822;color:#fff;border-radius:8px;font-size:11.5px;pointer-events:none;opacity:0;transition:opacity .12s,left .08s;box-shadow:0 10px 28px -8px rgba(11,24,34,.45);min-width:180px;z-index:20;letter-spacing:-.005em}
+.chart-tooltip .d{font-size:10.5px;color:#9aa7b3;font-weight:600;font-family:var(--mono);margin-bottom:7px;letter-spacing:.04em;text-transform:uppercase}
+.chart-tooltip .r{display:flex;align-items:center;gap:7px;padding:2px 0;font-size:12px;color:#cdd6dd;font-weight:500}
+.chart-tooltip .r .dt{width:9px;height:9px;border-radius:2px;flex:none}
+.chart-tooltip .r b{margin-left:auto;font-family:var(--mono);font-feature-settings:'tnum' 1;color:#fff;font-weight:600}
+#mrrChartHost svg .mrr-dot{transition:opacity .1s}
+#mrrChartHost svg .hover-line{transition:opacity .1s}
 
 /* funnel */
 .funnel{padding:4px 20px 20px}
@@ -578,26 +585,7 @@ a{color:inherit;text-decoration:none}
           <span class="legend-item"><span class="legend-dot" style="background:#8b5cf6"></span>Expansion <b>$6.2k</b></span>
           <span class="legend-item"><span class="legend-dot" style="background:#ef4444"></span>Churned <b>$2.8k</b></span>
         </div>
-        <div class="chart-wrap">
-          <svg viewBox="0 0 600 240" preserveAspectRatio="none">
-            <defs>
-              <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0d9488" stop-opacity=".25"/><stop offset="100%" stop-color="#0d9488" stop-opacity="0"/></linearGradient>
-              <linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#06b6d4" stop-opacity=".18"/><stop offset="100%" stop-color="#06b6d4" stop-opacity="0"/></linearGradient>
-            </defs>
-            <line x1="0" y1="40" x2="600" y2="40" stroke="#eef1f4" stroke-width="1"/>
-            <line x1="0" y1="100" x2="600" y2="100" stroke="#eef1f4" stroke-width="1"/>
-            <line x1="0" y1="160" x2="600" y2="160" stroke="#eef1f4" stroke-width="1"/>
-            <line x1="0" y1="220" x2="600" y2="220" stroke="#eef1f4" stroke-width="1"/>
-            <path d="M0,180 L40,170 L80,165 L120,155 L160,150 L200,140 L240,130 L280,125 L320,115 L360,100 L400,95 L440,80 L480,75 L520,55 L560,48 L600,40 L600,240 L0,240 Z" fill="url(#g1)"/>
-            <polyline points="0,180 40,170 80,165 120,155 160,150 200,140 240,130 280,125 320,115 360,100 400,95 440,80 480,75 520,55 560,48 600,40" fill="none" stroke="#0d9488" stroke-width="2.5" stroke-linejoin="round"/>
-            <path d="M0,200 L40,198 L80,195 L120,190 L160,192 L200,186 L240,180 L280,182 L320,175 L360,170 L400,168 L440,160 L480,162 L520,150 L560,148 L600,142 L600,240 L0,240 Z" fill="url(#g2)"/>
-            <polyline points="0,200 40,198 80,195 120,190 160,192 200,186 240,180 280,182 320,175 360,170 400,168 440,160 480,162 520,150 560,148 600,142" fill="none" stroke="#06b6d4" stroke-width="2" stroke-linejoin="round"/>
-            <polyline points="0,215 40,213 80,212 120,210 160,210 200,206 240,204 280,202 320,200 360,196 400,194 440,190 480,188 520,184 560,182 600,178" fill="none" stroke="#8b5cf6" stroke-width="1.8" stroke-dasharray="3 3"/>
-            <polyline points="0,225 40,224 80,223 120,222 160,224 200,222 240,221 280,222 320,220 360,219 400,218 440,217 480,216 520,215 560,214 600,213" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="2 4"/>
-            <circle cx="600" cy="40" r="5" fill="#fff" stroke="#0d9488" stroke-width="2.5"/>
-          </svg>
-          <div class="chart-x"><span>1 мая</span><span>8 мая</span><span>15 мая</span><span>22 мая</span><span>29 мая</span><span>5 июн</span><span>12 июн</span><span>18 июн</span></div>
-        </div>
+        <div class="chart-wrap" id="mrrChartHost"></div>
       </section>
 
       <section class="card">
@@ -1379,6 +1367,134 @@ document.querySelectorAll('.exp-card').forEach(function(card){
       '<button class="btn btn-pri" onclick="closeModal();window.__lumenToast(\'Применить победителя\')">Применить победителя</button>');
   });
 });
+
+// === MRR CHART (data-driven, interactive) ===
+(function(){
+  var host=document.getElementById('mrrChartHost');
+  if(!host)return;
+
+  // 31 daily samples: 19 мая → 18 июн 2026
+  var dates=['19 мая','20','21','22','23','24','25','26','27','28','29','30','31','1 июн','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18'];
+  var mrr=    [71400,71680,71950,72210,72480,72700,72980,73260,73510,73810,74110,74360,74680,74980,75290,75620,75940,76350,76720,77110,77580,78050,78540,79100,79680,80350,81020,81780,82480,83340,84320];
+  var newR=   [410,430,380,420,350,470,440,420,460,440,380,480,460,470,510,480,580,580,600,660,700,700,740,760,820,820,860,800,950,940,1060];
+  var expR=   [130,150,100,140,120,130,160,140,170,150,130,170,140,160,170,160,200,200,210,220,230,230,240,250,260,270,280,240,300,300,340];
+  var churn=  [260,280,220,290,200,240,240,260,290,230,200,260,280,260,290,210,230,240,280,230,220,230,250,220,260,240,250,240,290,260,280];
+
+  var N=dates.length;
+  var W=600,H=260;
+  var PL=46,PR=44,PT=14,PB=36;
+  var PW=W-PL-PR, PH=H-PT-PB;
+  // Left scale (MRR): 70k → 86k
+  var mrrMin=70000, mrrMax=86000;
+  // Right scale (flows): 0 → 1200
+  var flowMax=1200;
+
+  function xAt(i){return PL+(i/(N-1))*PW}
+  function yMrr(v){return PT+(1-(v-mrrMin)/(mrrMax-mrrMin))*PH}
+  function yFlow(v){return PT+(1-v/flowMax)*PH}
+
+  function pointsMrr(){return mrr.map(function(v,i){return xAt(i).toFixed(1)+','+yMrr(v).toFixed(1)}).join(' ')}
+  function pointsFlow(arr){return arr.map(function(v,i){return xAt(i).toFixed(1)+','+yFlow(v).toFixed(1)}).join(' ')}
+
+  var leftTicks=[70000,74000,78000,82000,86000];
+  var rightTicks=[0,300,600,900,1200];
+  var xLabelEvery=5;
+
+  var parts=[];
+  parts.push('<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none">');
+  parts.push('<defs><linearGradient id="mrrG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0d9488" stop-opacity=".24"/><stop offset="100%" stop-color="#0d9488" stop-opacity="0"/></linearGradient></defs>');
+
+  // grid + left Y labels
+  leftTicks.forEach(function(v){
+    var y=yMrr(v);
+    parts.push('<line x1="'+PL+'" y1="'+y+'" x2="'+(W-PR)+'" y2="'+y+'" stroke="#eef1f4" stroke-width="1"/>');
+    parts.push('<text x="'+(PL-8)+'" y="'+(y+3)+'" text-anchor="end" font-size="10" fill="#9aa7b3" font-family="JetBrains Mono,monospace">$'+(v/1000)+'k</text>');
+  });
+  // right Y labels
+  rightTicks.forEach(function(v){
+    var y=yFlow(v);
+    parts.push('<text x="'+(W-PR+8)+'" y="'+(y+3)+'" text-anchor="start" font-size="10" fill="#9aa7b3" font-family="JetBrains Mono,monospace">$'+v+'</text>');
+  });
+  // axes lines
+  parts.push('<line x1="'+PL+'" y1="'+PT+'" x2="'+PL+'" y2="'+(PT+PH)+'" stroke="#cdd6dd" stroke-width="1"/>');
+  parts.push('<line x1="'+PL+'" y1="'+(PT+PH)+'" x2="'+(W-PR)+'" y2="'+(PT+PH)+'" stroke="#cdd6dd" stroke-width="1"/>');
+  parts.push('<line x1="'+(W-PR)+'" y1="'+PT+'" x2="'+(W-PR)+'" y2="'+(PT+PH)+'" stroke="#cdd6dd" stroke-width="1"/>');
+
+  // axis legend
+  parts.push('<text x="'+PL+'" y="'+(PT-4)+'" font-size="9" fill="#5e6e7d" font-family="JetBrains Mono,monospace" font-weight="600">MRR</text>');
+  parts.push('<text x="'+(W-PR)+'" y="'+(PT-4)+'" text-anchor="end" font-size="9" fill="#5e6e7d" font-family="JetBrains Mono,monospace" font-weight="600">DAILY · $</text>');
+
+  // x labels
+  for(var i=0;i<N;i+=xLabelEvery){
+    parts.push('<text x="'+xAt(i)+'" y="'+(H-12)+'" text-anchor="middle" font-size="10" fill="#9aa7b3" font-family="JetBrains Mono,monospace">'+dates[i]+'</text>');
+  }
+  // last x label always
+  if((N-1)%xLabelEvery!==0)parts.push('<text x="'+xAt(N-1)+'" y="'+(H-12)+'" text-anchor="middle" font-size="10" fill="#9aa7b3" font-family="JetBrains Mono,monospace">'+dates[N-1]+'</text>');
+
+  // MRR area
+  var mrrPts=pointsMrr();
+  parts.push('<path d="M'+xAt(0).toFixed(1)+','+yMrr(mrr[0]).toFixed(1)+' L'+mrrPts.split(' ').slice(1).join(' L')+' L'+xAt(N-1).toFixed(1)+','+(PT+PH).toFixed(1)+' L'+xAt(0).toFixed(1)+','+(PT+PH).toFixed(1)+' Z" fill="url(#mrrG)"/>');
+  parts.push('<polyline points="'+mrrPts+'" fill="none" stroke="#0d9488" stroke-width="2.5" stroke-linejoin="round"/>');
+  parts.push('<polyline points="'+pointsFlow(newR)+'" fill="none" stroke="#06b6d4" stroke-width="2" stroke-linejoin="round"/>');
+  parts.push('<polyline points="'+pointsFlow(expR)+'" fill="none" stroke="#8b5cf6" stroke-width="1.8" stroke-dasharray="3 3"/>');
+  parts.push('<polyline points="'+pointsFlow(churn)+'" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="2 4"/>');
+
+  // dots (hidden, shown on hover)
+  for(var i=0;i<N;i++){
+    parts.push('<circle class="mrr-dot" data-i="'+i+'" cx="'+xAt(i)+'" cy="'+yMrr(mrr[i])+'" r="4" fill="#fff" stroke="#0d9488" stroke-width="2" opacity="0"/>');
+  }
+  // last MRR point always visible
+  parts.push('<circle cx="'+xAt(N-1)+'" cy="'+yMrr(mrr[N-1])+'" r="5" fill="#fff" stroke="#0d9488" stroke-width="2.5"/>');
+
+  // hover guide
+  parts.push('<line class="hover-line" x1="0" y1="'+PT+'" x2="0" y2="'+(PT+PH)+'" stroke="#0d9488" stroke-width="1" stroke-dasharray="3 3" opacity="0"/>');
+  parts.push('<rect class="hover-rect" x="'+PL+'" y="'+PT+'" width="'+PW+'" height="'+PH+'" fill="transparent" style="cursor:crosshair"/>');
+  parts.push('</svg>');
+  parts.push('<div class="chart-tooltip" id="chartTip"></div>');
+  host.innerHTML=parts.join('');
+
+  var svgEl=host.querySelector('svg');
+  var overlay=host.querySelector('.hover-rect');
+  var dots=host.querySelectorAll('.mrr-dot');
+  var hoverLine=host.querySelector('.hover-line');
+  var tip=host.querySelector('#chartTip');
+
+  function fmtN(n){return n.toLocaleString('ru-RU')}
+
+  overlay.addEventListener('mousemove',function(e){
+    var rect=svgEl.getBoundingClientRect();
+    var vx=(e.clientX-rect.left)*(W/rect.width);
+    var idx=Math.round((vx-PL)/PW*(N-1));
+    if(idx<0)idx=0;if(idx>N-1)idx=N-1;
+    dots.forEach(function(d){d.setAttribute('opacity','0')});
+    dots[idx].setAttribute('opacity','1');
+    var xPx=xAt(idx);
+    hoverLine.setAttribute('x1',xPx);
+    hoverLine.setAttribute('x2',xPx);
+    hoverLine.setAttribute('opacity','1');
+    var dLabel=dates[idx];
+    if(!/\s/.test(dLabel))dLabel+=(idx<=12?' мая':' июн');
+    tip.innerHTML=
+      '<div class="d">'+dLabel+' · 2026</div>'+
+      '<div class="r"><span class="dt" style="background:#0d9488"></span>MRR<b>$'+fmtN(mrr[idx])+'</b></div>'+
+      '<div class="r"><span class="dt" style="background:#06b6d4"></span>New<b>$'+fmtN(newR[idx])+'</b></div>'+
+      '<div class="r"><span class="dt" style="background:#8b5cf6"></span>Expansion<b>$'+fmtN(expR[idx])+'</b></div>'+
+      '<div class="r"><span class="dt" style="background:#ef4444"></span>Churned<b>−$'+fmtN(churn[idx])+'</b></div>';
+    var hostRect=host.getBoundingClientRect();
+    var xRel=(xPx/W)*hostRect.width;
+    var tipW=190;
+    var left=xRel+14;
+    if(left+tipW>hostRect.width-8)left=xRel-tipW-14;
+    if(left<8)left=8;
+    tip.style.left=left+'px';
+    tip.style.opacity='1';
+  });
+  overlay.addEventListener('mouseleave',function(){
+    dots.forEach(function(d){d.setAttribute('opacity','0')});
+    hoverLine.setAttribute('opacity','0');
+    tip.style.opacity='0';
+  });
+})();
 </script>
 </body>
 </html>
