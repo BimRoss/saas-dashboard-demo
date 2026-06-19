@@ -144,7 +144,7 @@ a{color:inherit;text-decoration:none}
 .legend-item b{color:var(--ink);font-weight:600;font-feature-settings:'tnum' 1}
 .legend-dot{width:9px;height:9px;border-radius:3px}
 .chart-wrap{position:relative;padding:0 12px 18px}
-.chart-wrap svg{width:100%;height:280px;display:block;overflow:visible}
+.chart-wrap svg{width:100%;height:380px;display:block;overflow:visible}
 .chart-wrap.tall svg{height:300px}
 .chart-x{display:flex;justify-content:space-between;font-size:10.5px;color:var(--faint);padding:6px 8px 0;font-family:var(--mono)}
 .chart-tooltip{position:absolute;top:8px;padding:10px 12px;background:#0b1822;color:#fff;border-radius:8px;font-size:11.5px;pointer-events:none;opacity:0;transition:opacity .12s,left .08s;box-shadow:0 10px 28px -8px rgba(11,24,34,.45);min-width:180px;z-index:20;letter-spacing:-.005em}
@@ -1381,8 +1381,8 @@ document.querySelectorAll('.exp-card').forEach(function(card){
   var churn=  [260,280,220,290,200,240,240,260,290,230,200,260,280,260,290,210,230,240,280,230,220,230,250,220,260,240,250,240,290,260,280];
 
   var N=dates.length;
-  var W=620,H=280;
-  var PL=58,PR=58,PT=26,PB=42;
+  var W=620,H=380;
+  var PL=58,PR=58,PT=30,PB=46;
   var PW=W-PL-PR, PH=H-PT-PB;
   // Left scale (MRR): 70k → 86k
   var mrrMin=70000, mrrMax=86000;
