@@ -276,7 +276,11 @@ a{color:inherit;text-decoration:none}
 @media(max-width:1100px){.int-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:760px){.int-grid{grid-template-columns:1fr}}
 .int-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:18px;display:flex;align-items:center;gap:14px}
-.int-logo{width:42px;height:42px;border-radius:10px;display:grid;place-items:center;color:#fff;font-weight:700;font-size:14px;font-family:var(--mono);flex:none}
+.int-logo{width:42px;height:42px;border-radius:10px;display:grid;place-items:center;background:#fff;border:1px solid var(--border);flex:none;overflow:hidden}
+.int-logo svg{width:26px;height:26px;display:block}
+.int-card{cursor:pointer}
+.int-card.off{opacity:.72}
+.int-card.off .int-logo{filter:grayscale(.6)}
 .int-card .info{flex:1;min-width:0}
 .int-card b{font-size:13.5px;font-weight:600;display:block;letter-spacing:-.01em}
 .int-card small{font-size:11.5px;color:var(--mut);display:block;margin-top:2px}
@@ -350,6 +354,30 @@ a{color:inherit;text-decoration:none}
 .notif-pop .ni .tx b{color:var(--ink);font-weight:600}
 .notif-pop .ni .tx small{display:block;font-size:11px;color:var(--mut);margin-top:2px}
 .notif-pop .unread{width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none;margin-top:9px}
+
+/* modal */
+.modal-bg{position:fixed;inset:0;background:rgba(11,24,34,.48);backdrop-filter:blur(2px);display:none;align-items:center;justify-content:center;z-index:200;padding:24px;opacity:0;transition:.2s}
+.modal-bg.on{display:flex;opacity:1}
+.modal{background:#fff;border-radius:16px;max-width:560px;width:100%;max-height:88vh;overflow:auto;box-shadow:0 30px 80px -20px rgba(11,24,34,.45);transform:translateY(10px) scale(.98);transition:.22s cubic-bezier(.2,.7,.2,1)}
+.modal-bg.on .modal{transform:none}
+.modal-h{display:flex;align-items:center;justify-content:space-between;padding:20px 22px 14px;border-bottom:1px solid var(--border)}
+.modal-h h3{font-size:17px;font-weight:700;letter-spacing:-.02em}
+.modal-h small{display:block;font-size:12px;color:var(--mut);margin-top:3px;font-weight:500}
+.modal-close{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;color:var(--mut);transition:.15s}
+.modal-close:hover{background:var(--bg);color:var(--ink)}
+.modal-close svg{width:16px;height:16px;stroke:currentColor;stroke-width:2;fill:none}
+.modal-b{padding:20px 22px}
+.modal-b p{font-size:13.5px;color:var(--ink-2);line-height:1.55;margin-bottom:12px}
+.modal-b .prev{background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:16px;margin:10px 0 16px}
+.modal-b .prev svg{width:100%;height:160px;display:block}
+.modal-b .row{display:grid;grid-template-columns:140px 1fr;gap:14px;padding:8px 0;font-size:13px;border-bottom:1px solid var(--border)}
+.modal-b .row:last-child{border-bottom:none}
+.modal-b .row .l{color:var(--mut);font-weight:500}
+.modal-b .row .v{color:var(--ink);font-weight:600}
+.modal-b label{display:block;font-size:12px;font-weight:600;color:var(--mut);margin:10px 0 6px;letter-spacing:.02em;text-transform:uppercase}
+.modal-b input,.modal-b select,.modal-b textarea{width:100%;background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13.5px;color:var(--ink);font-family:inherit}
+.modal-b input:focus,.modal-b select:focus,.modal-b textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
+.modal-f{padding:14px 22px 20px;display:flex;justify-content:flex-end;gap:10px;border-top:1px solid var(--border)}
 
 /* nps gauge */
 .nps-wrap{padding:14px 20px 20px;display:flex;align-items:center;gap:24px}
@@ -474,6 +502,16 @@ a{color:inherit;text-decoration:none}
       </div>
       <button class="btn btn-pri" id="btnNewReport"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Новый отчёт</button>
       <div class="toast" id="toast"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span id="toastTxt">Готово</span></div>
+      <div class="modal-bg" id="modalBg">
+        <div class="modal" id="modal" role="dialog" aria-modal="true">
+          <div class="modal-h">
+            <div><h3 id="modalTitle">—</h3><small id="modalSub">—</small></div>
+            <button class="modal-close" id="modalClose" title="Закрыть"><svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+          </div>
+          <div class="modal-b" id="modalBody"></div>
+          <div class="modal-f" id="modalFoot"></div>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -952,12 +990,12 @@ a{color:inherit;text-decoration:none}
     <!-- Reports page -->
     <div class="reveal" data-pages="reports">
       <div class="reports-grid">
-        <div class="rep-card"><div class="ico"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8M21 7v5h-5"/></svg></div><b>Еженедельный MRR</b><small>Выручка, расширения, churn по неделям</small><div class="meta">Автоотправка · понедельник<span>📧 → команда</span></div></div>
-        <div class="rep-card"><div class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg></div><b>Когорты по каналам</b><small>Retention в разрезе источников трафика</small><div class="meta">По запросу<span>📊 BI-дашборд</span></div></div>
-        <div class="rep-card"><div class="ico"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5"/></svg></div><b>Churn-анализ</b><small>Кто и почему отвалился за месяц</small><div class="meta">Автоотправка · 1-е число<span>📧 → CEO</span></div></div>
-        <div class="rep-card"><div class="ico"><svg viewBox="0 0 24 24"><path d="M3 3h18v4H3zM6 7v14h12V7"/></svg></div><b>Воронка signup → paid</b><small>Конверсия на каждом шаге, drop-off</small><div class="meta">Ежедневно · 09:00<span>📧 → growth</span></div></div>
-        <div class="rep-card"><div class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/></svg></div><b>География юзеров</b><small>Распределение DAU по странам + рост</small><div class="meta">Еженедельно<span>📊 BI</span></div></div>
-        <div class="rep-card"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div><b>+ Создать новый отчёт</b><small>На основе любого графика или метрики</small><div class="meta">Шаблон или с нуля<span style="color:var(--accent-2);font-weight:600">Начать →</span></div></div>
+        <div class="rep-card" data-rep="mrr"><div class="ico"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8M21 7v5h-5"/></svg></div><b>Еженедельный MRR</b><small>Выручка, расширения, churn по неделям</small><div class="meta">Автоотправка · понедельник<span>📧 → команда</span></div></div>
+        <div class="rep-card" data-rep="cohorts"><div class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg></div><b>Когорты по каналам</b><small>Retention в разрезе источников трафика</small><div class="meta">По запросу<span>📊 BI-дашборд</span></div></div>
+        <div class="rep-card" data-rep="churn"><div class="ico"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5"/></svg></div><b>Churn-анализ</b><small>Кто и почему отвалился за месяц</small><div class="meta">Автоотправка · 1-е число<span>📧 → CEO</span></div></div>
+        <div class="rep-card" data-rep="funnel"><div class="ico"><svg viewBox="0 0 24 24"><path d="M3 3h18v4H3zM6 7v14h12V7"/></svg></div><b>Воронка signup → paid</b><small>Конверсия на каждом шаге, drop-off</small><div class="meta">Ежедневно · 09:00<span>📧 → growth</span></div></div>
+        <div class="rep-card" data-rep="geo"><div class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/></svg></div><b>География юзеров</b><small>Распределение DAU по странам + рост</small><div class="meta">Еженедельно<span>📊 BI</span></div></div>
+        <div class="rep-card" id="newReport" data-rep="new"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div><b>+ Создать новый отчёт</b><small>На основе любого графика или метрики</small><div class="meta">Шаблон или с нуля<span style="color:var(--accent-2);font-weight:600">Начать →</span></div></div>
       </div>
     </div>
 
@@ -996,15 +1034,15 @@ a{color:inherit;text-decoration:none}
     <!-- Integrations page -->
     <div class="reveal" data-pages="integrations">
       <div class="int-grid">
-        <div class="int-card"><span class="int-logo" style="background:linear-gradient(135deg,#4a154b,#2d0c2f)">SL</span><div class="info"><b>Slack</b><small>Уведомления по метрикам и алерты</small></div><span class="status">Активно</span></div>
-        <div class="int-card"><span class="int-logo" style="background:linear-gradient(135deg,#229ed9,#1c8bc4)">TG</span><div class="info"><b>Telegram Bot</b><small>Daily digest в команду</small></div><span class="status">Активно</span></div>
-        <div class="int-card"><span class="int-logo" style="background:linear-gradient(135deg,#a3a3a3,#525252)">GA</span><div class="info"><b>Google Analytics 4</b><small>Импорт сессий и каналов</small></div><span class="status">Активно</span></div>
-        <div class="int-card"><span class="int-logo" style="background:linear-gradient(135deg,#6772e5,#4f54c8)">ST</span><div class="info"><b>Stripe</b><small>Биллинг и MRR в реалтайме</small></div><span class="status">Активно</span></div>
-        <div class="int-card"><span class="int-logo" style="background:linear-gradient(135deg,#ff7849,#dc2626)">SE</span><div class="info"><b>Segment</b><small>Сбор продуктовых событий</small></div><span class="status off">Отключено</span></div>
-        <div class="int-card"><span class="int-logo" style="background:linear-gradient(135deg,#0073e6,#0052b3)">IN</span><div class="info"><b>Intercom</b><small>Чат-сессии и NPS</small></div><span class="status off">Отключено</span></div>
-        <div class="int-card"><span class="int-logo" style="background:linear-gradient(135deg,#0d9488,#0f766e)">WH</span><div class="info"><b>Webhook</b><small>Произвольный HTTP-эндпоинт</small></div><span class="status">Активно</span></div>
-        <div class="int-card"><span class="int-logo" style="background:linear-gradient(135deg,#ffd600,#f5b800);color:#000">ZP</span><div class="info"><b>Zapier</b><small>2000+ автоматизаций</small></div><span class="status off">Отключено</span></div>
-        <div class="int-card" style="border-style:dashed;justify-content:center"><span style="color:var(--accent-2);font-weight:600">+ Добавить интеграцию</span></div>
+        <div class="int-card" data-int="Slack"><span class="int-logo"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#E01E5A" d="M5.04 14.65a1.92 1.92 0 1 1 0-3.84h1.93v1.93a1.93 1.93 0 0 1-1.93 1.91zm.96 0a1.93 1.93 0 0 1 3.85 0v4.81a1.92 1.92 0 1 1-3.85 0z"/><path fill="#36C5F0" d="M7.93 6.93a1.92 1.92 0 1 1 3.84 0v1.93H9.85a1.92 1.92 0 0 1-1.92-1.93zm0 .98a1.92 1.92 0 0 1 0 3.84H3.11a1.92 1.92 0 1 1 0-3.84z"/><path fill="#2EB67D" d="M16.07 9.34a1.92 1.92 0 1 1 3.84 0v4.82a1.92 1.92 0 1 1-3.84 0zm-.96 0a1.92 1.92 0 0 1-3.85 0V4.54a1.93 1.93 0 0 1 3.85 0z"/><path fill="#ECB22E" d="M14.15 16.07a1.92 1.92 0 1 1 0 3.85h-1.92V18a1.92 1.92 0 0 1 1.92-1.93zm0-.96a1.92 1.92 0 0 1 0-3.85h4.81a1.92 1.92 0 1 1 0 3.85z"/></svg></span><div class="info"><b>Slack</b><small>Уведомления по метрикам и алерты</small></div><span class="status">Активно</span></div>
+        <div class="int-card" data-int="Telegram Bot"><span class="int-logo"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#229ED9"/><path fill="#fff" d="M5.5 11.6 17.3 7c.6-.2 1.1.1 1 .9l-2 9.4c-.1.6-.5.7-1.1.5l-3-2.3-1.5 1.4c-.2.2-.3.3-.6.3l.2-3.1 5.8-5.3c.2-.2 0-.4-.4-.2l-7.2 4.5-3.1-.9c-.7-.2-.7-.7.2-1z"/></svg></span><div class="info"><b>Telegram Bot</b><small>Daily digest в команду</small></div><span class="status">Активно</span></div>
+        <div class="int-card" data-int="Google Analytics 4"><span class="int-logo"><svg viewBox="0 0 24 24"><rect x="3" y="13" width="4" height="8" rx="2" fill="#F9AB00"/><rect x="10" y="9" width="4" height="12" rx="2" fill="#F9AB00"/><rect x="17" y="3" width="4" height="18" rx="2" fill="#E37400"/></svg></span><div class="info"><b>Google Analytics 4</b><small>Импорт сессий и каналов</small></div><span class="status">Активно</span></div>
+        <div class="int-card" data-int="Stripe"><span class="int-logo" style="background:#635BFF;border-color:#635BFF"><svg viewBox="0 0 24 24"><path fill="#fff" d="M13.6 9.8c0-.7.6-1 1.5-1 1.3 0 3 .4 4.3 1.1V5.7C18 5.2 16.6 5 15.1 5c-3.5 0-5.9 1.8-5.9 4.9 0 4.8 6.6 4 6.6 6.1 0 .8-.7 1.1-1.7 1.1-1.4 0-3.2-.6-4.7-1.4v4.3c1.6.7 3.3 1 4.7 1 3.6 0 6.1-1.8 6.1-4.9 0-5.2-6.6-4.2-6.6-6.3z"/></svg></span><div class="info"><b>Stripe</b><small>Биллинг и MRR в реалтайме</small></div><span class="status">Активно</span></div>
+        <div class="int-card off" data-int="Segment"><span class="int-logo"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#52BD94"/><path fill="#fff" d="M5 14h9a2 2 0 1 1 0 4H7a9 9 0 0 1-2-4zm5-4a2 2 0 1 1 0-4h7a9 9 0 0 1 2 4z"/><circle cx="18.5" cy="5.5" r="1.5" fill="#fff"/><circle cx="5.5" cy="18.5" r="1.5" fill="#fff"/></svg></span><div class="info"><b>Segment</b><small>Сбор продуктовых событий</small></div><span class="status off">Отключено</span></div>
+        <div class="int-card off" data-int="Intercom"><span class="int-logo" style="background:#286EFA;border-color:#286EFA"><svg viewBox="0 0 24 24"><path fill="#fff" d="M5 4h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2c-1 0-1.5-.5-2.5-1.2-1 .5-2.4.7-4.5.7s-3.5-.2-4.5-.7C6.5 19.5 6 20 5 20a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm2 5v6a1 1 0 1 0 2 0V9a1 1 0 0 0-2 0zm4-1v8a1 1 0 1 0 2 0V8a1 1 0 0 0-2 0zm4 1v6a1 1 0 1 0 2 0V9a1 1 0 0 0-2 0z"/></svg></span><div class="info"><b>Intercom</b><small>Чат-сессии и NPS</small></div><span class="status off">Отключено</span></div>
+        <div class="int-card" data-int="Webhook"><span class="int-logo" style="background:#0d9488;border-color:#0d9488"><svg viewBox="0 0 24 24"><path fill="#fff" d="M10.5 14a2.7 2.7 0 0 1-2.7 2.7A2.7 2.7 0 0 1 5 14a2.7 2.7 0 0 1 1.8-2.5l2.5-4.2A4.4 4.4 0 0 0 7.4 9a4.4 4.4 0 0 0 .9 7.1A4.4 4.4 0 0 0 13 14h-2.5zm5.7-2.7c-.4 0-.8.1-1.2.2l-2.5-4.2c.5-.5.8-1.1.8-1.8a2.7 2.7 0 0 0-5.4 0c0 .6.2 1.2.6 1.6l-2.5 4.2c.5.2 1 .5 1.4.9l3.1-5.4c.2 0 .3.1.5.1.4 0 .8-.1 1.1-.3l2.5 4.4c-.4.5-.6 1.1-.6 1.7 0 1 .5 1.8 1.3 2.3l-3.1 5.4c.4.3.7.7.9 1.2h.1l3-5.3c.4.1.8.2 1.2.2a4.4 4.4 0 0 0 0-8.8z"/></svg></span><div class="info"><b>Webhook</b><small>Произвольный HTTP-эндпоинт</small></div><span class="status">Активно</span></div>
+        <div class="int-card off" data-int="Zapier"><span class="int-logo" style="background:#FF4A00;border-color:#FF4A00"><svg viewBox="0 0 24 24"><path fill="#fff" d="M12 3a9 9 0 0 1 1 .1l-1 3.8-1-3.8c.3-.1.6-.1 1-.1zm6.4 2.6.7.7-2.8 2.8L17.7 5.5a9 9 0 0 1 .7.1zM21 12c0 .3 0 .6-.1 1l-3.8-1 3.8-1c.1.3.1.6.1 1zm-2.6 6.4-.7.7-2.8-2.8L18.5 17.7c0 .2-.1.4-.1.7zM12 21c-.3 0-.6 0-1-.1l1-3.8 1 3.8c-.3.1-.6.1-1 .1zm-6.4-2.6-.7-.7 2.8-2.8L6.3 18.5a9 9 0 0 1-.7-.1zM3 12c0-.3 0-.6.1-1l3.8 1-3.8 1c-.1-.3-.1-.6-.1-1zm2.6-6.4.7-.7 2.8 2.8L5.5 6.3a9 9 0 0 1 .1-.7zm3.6 5.2 2.8-1V6.6h.1l-.1 3.2 2.8 1-2.8 1 .1 3.2h-.1v-3.2l-2.8-1z"/></svg></span><div class="info"><b>Zapier</b><small>2000+ автоматизаций</small></div><span class="status off">Отключено</span></div>
+        <div class="int-card" id="addInt" style="border-style:dashed;justify-content:center;background:var(--surface-2)"><span style="color:var(--accent-2);font-weight:600;font-size:13.5px">+ Добавить интеграцию</span></div>
       </div>
     </div>
 
@@ -1162,6 +1200,181 @@ document.getElementById('markRead').addEventListener('click',function(e){
 document.getElementById('btnNewReport').addEventListener('click',function(){
   goTo('reports');
   showToast('Раздел «Отчёты» открыт');
+});
+
+// === MODAL ===
+var modalBg=document.getElementById('modalBg');
+var modalTitle=document.getElementById('modalTitle');
+var modalSub=document.getElementById('modalSub');
+var modalBody=document.getElementById('modalBody');
+var modalFoot=document.getElementById('modalFoot');
+function openModal(title,sub,bodyHtml,footHtml){
+  modalTitle.textContent=title;
+  modalSub.textContent=sub||'';
+  modalBody.innerHTML=bodyHtml;
+  modalFoot.innerHTML=footHtml||'<button class="btn btn-ghost" onclick="closeModal()">Закрыть</button>';
+  modalBg.classList.add('on');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){
+  modalBg.classList.remove('on');
+  document.body.style.overflow='';
+}
+window.closeModal=closeModal;
+document.getElementById('modalClose').addEventListener('click',closeModal);
+modalBg.addEventListener('click',function(e){if(e.target===modalBg)closeModal()});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&modalBg.classList.contains('on'))closeModal()});
+
+// === REPORT CARDS ===
+var REPORTS={
+  mrr:{title:'Еженедельный MRR',sub:'Превью отчёта · последние 8 недель',svg:'<polyline points="0,80 60,72 120,65 180,55 240,48 300,38 360,28 420,18" fill="none" stroke="#0d9488" stroke-width="2.5"/><circle cx="420" cy="18" r="4" fill="#fff" stroke="#0d9488" stroke-width="2.5"/>',
+    rows:[['MRR на конец','$84 320'],['Прирост за неделю','+$3 240'],['New revenue','$12 400'],['Churn','−$2 800'],['Отчёт уходит','каждый понедельник 09:00 MSK'],['Получатели','команда (8 чел.)']]},
+  cohorts:{title:'Когорты по каналам',sub:'Retention по источникам · 6 когорт',svg:'<rect x="0" y="20" width="60" height="120" fill="#0d9488"/><rect x="70" y="40" width="60" height="100" fill="#14b8a6"/><rect x="140" y="60" width="60" height="80" fill="#5eead4"/><rect x="210" y="85" width="60" height="55" fill="#06b6d4"/><rect x="280" y="100" width="60" height="40" fill="#8b5cf6"/><rect x="350" y="115" width="60" height="25" fill="#ec4899"/>',
+    rows:[['Лучшая когорта','Referral · M3 retention 64%'],['Худшая когорта','Facebook · M3 retention 14%'],['Средний M1','53%'],['Формат','BI-дашборд (Metabase)'],['Доступ','growth + продакт']]},
+  churn:{title:'Churn-анализ',sub:'Кто и почему отвалился',svg:'<rect x="0" y="20" width="40" height="120" fill="#ef4444"/><rect x="50" y="50" width="40" height="90" fill="#f59e0b"/><rect x="100" y="80" width="40" height="60" fill="#8b5cf6"/><rect x="150" y="100" width="40" height="40" fill="#3b82f6"/><rect x="200" y="110" width="40" height="30" fill="#0d9488"/>',
+    rows:[['Churn за месяц','28 юзеров ($2 800)'],['Топ-причина','Дорого (34%)'],['Возможный win-back','9 юзеров · $1 240 LTV'],['Получатель','CEO (1-е число)']]},
+  funnel:{title:'Воронка signup → paid',sub:'Конверсия на каждом шаге',svg:'<rect x="0" y="0" width="420" height="22" fill="#0d9488"/><rect x="40" y="30" width="340" height="22" fill="#14b8a6"/><rect x="100" y="60" width="220" height="22" fill="#5eead4"/><rect x="150" y="90" width="120" height="22" fill="#06b6d4"/><rect x="190" y="120" width="40" height="22" fill="#8b5cf6"/>',
+    rows:[['End-to-end CR','1.80%'],['Worst drop-off','посетители → /pricing (58%)'],['Best step','email → активация (78%)'],['Slack-алерт','при падении CR > 0.5%']]},
+  geo:{title:'География юзеров',sub:'DAU и MRR по странам · 12 стран',svg:'<circle cx="100" cy="60" r="38" fill="#0d9488"/><circle cx="200" cy="80" r="28" fill="#14b8a6"/><circle cx="270" cy="60" r="22" fill="#5eead4"/><circle cx="330" cy="85" r="18" fill="#06b6d4"/><circle cx="380" cy="60" r="14" fill="#8b5cf6"/>',
+    rows:[['Топ-3','🇷🇺 4 580 · 🇰🇿 2 780 · 🇧🇾 1 890'],['Самый растущий','🇰🇿 Казахстан (+42%)'],['Самый прибыльный','🇮🇱 ARPU $48']]}
+};
+
+document.querySelectorAll('.rep-card').forEach(function(card){
+  card.addEventListener('click',function(){
+    var key=card.dataset.rep;
+    if(key==='new'){openCreateReportModal();return}
+    var r=REPORTS[key];if(!r)return;
+    var rows=r.rows.map(function(p){return '<div class="row"><div class="l">'+p[0]+'</div><div class="v">'+p[1]+'</div></div>'}).join('');
+    var html='<div class="prev"><svg viewBox="0 0 420 140" preserveAspectRatio="none">'+r.svg+'</svg></div>'+rows;
+    var foot='<button class="btn btn-ghost" onclick="closeModal()">Закрыть</button>'+
+             '<button class="btn btn-ghost" onclick="closeModal();window.__lumenToast(\'Отчёт скачан в PDF\')">Скачать PDF</button>'+
+             '<button class="btn btn-pri" onclick="closeModal();window.__lumenToast(\'Отчёт отправлен в команду\')">Отправить</button>';
+    openModal(r.title,r.sub,html,foot);
+  });
+});
+
+function openCreateReportModal(){
+  var html=
+    '<p>Выбери источник данных и формат — и я соберу новый отчёт.</p>'+
+    '<label>Название отчёта</label><input id="rpName" value="Мой отчёт ('+new Date().toLocaleDateString('ru-RU')+')">'+
+    '<label>Источник</label><select id="rpSrc"><option>MRR / выручка</option><option>Когорты</option><option>Воронка</option><option>География</option><option>Каналы привлечения</option></select>'+
+    '<label>Расписание</label><select id="rpSched"><option>Однократно</option><option>Ежедневно</option><option>Еженедельно (пн)</option><option>Ежемесячно (1-е)</option></select>'+
+    '<label>Получатели (email через запятую)</label><input id="rpTo" placeholder="team@lumen-team.io, mark@lumen-team.io">';
+  var foot='<button class="btn btn-ghost" onclick="closeModal()">Отмена</button>'+
+           '<button class="btn btn-pri" onclick="window.__createReport()">Создать</button>';
+  openModal('Новый отчёт','Шаблон или с нуля',html,foot);
+}
+window.__lumenToast=showToast;
+window.__createReport=function(){
+  var n=document.getElementById('rpName').value.trim()||'Без названия';
+  closeModal();
+  showToast('Отчёт «'+n+'» создан');
+};
+
+// === INTEGRATIONS ===
+document.querySelectorAll('.int-card[data-int]').forEach(function(card){
+  card.addEventListener('click',function(){
+    var name=card.dataset.int;
+    var st=card.querySelector('.status');
+    var off=card.classList.contains('off');
+    var foot=
+      '<button class="btn btn-ghost" onclick="closeModal()">Закрыть</button>'+
+      '<button class="btn btn-pri" onclick="window.__toggleInt(\''+name.replace(/'/g,"\\'")+'\')">'+(off?'Подключить':'Отключить')+'</button>';
+    var rows=[
+      ['Статус',off?'<span class="pill" style="background:var(--bg);color:var(--mut);padding:2px 9px;border-radius:100px;font-size:11px;font-weight:600">Отключено</span>':'<span class="pill" style="background:var(--green-soft);color:var(--green);padding:2px 9px;border-radius:100px;font-size:11px;font-weight:600">Активно</span>'],
+      ['Подключено',off?'—':'12 апреля 2026'],
+      ['Последний вызов',off?'—':'2 мин назад'],
+      ['Запросов за 24ч',off?'—':(Math.floor(Math.random()*900)+200).toString()]
+    ];
+    var rowsHtml=rows.map(function(p){return '<div class="row"><div class="l">'+p[0]+'</div><div class="v">'+p[1]+'</div></div>'}).join('');
+    openModal(name,'Подробности интеграции',rowsHtml,foot);
+  });
+});
+window.__toggleInt=function(name){
+  var card=document.querySelector('.int-card[data-int="'+name.replace(/"/g,'\\"')+'"]');
+  if(!card){closeModal();return}
+  var off=card.classList.toggle('off');
+  var st=card.querySelector('.status');
+  if(off){st.classList.add('off');st.textContent='Отключено'}
+  else{st.classList.remove('off');st.textContent='Активно'}
+  closeModal();
+  showToast(name+(off?' отключён':' подключён'));
+};
+document.getElementById('addInt').addEventListener('click',function(){
+  var html='<p>Выбери, какой сервис подключить. После подключения он появится в списке как «Активный».</p>'+
+    '<label>Сервис</label><select><option>Notion</option><option>HubSpot</option><option>Mixpanel</option><option>Amplitude</option><option>PostHog</option><option>Discord</option><option>Linear</option></select>'+
+    '<label>API-ключ или OAuth</label><input placeholder="sk_live_... или нажми OAuth ниже">';
+  var foot='<button class="btn btn-ghost" onclick="closeModal()">Отмена</button>'+
+           '<button class="btn btn-pri" onclick="closeModal();window.__lumenToast(\'Интеграция подключена\')">Подключить</button>';
+  openModal('Добавить интеграцию','Каталог из 40+ сервисов',html,foot);
+});
+
+// === WIN-BACK BUTTONS ===
+document.querySelectorAll('.wb-item .btn-mini').forEach(function(b){
+  b.addEventListener('click',function(e){
+    e.stopPropagation();
+    var name=b.closest('.wb-item').querySelector('.info b').textContent;
+    var action=b.textContent.trim();
+    showToast(action+' → '+name+' (отправлено)');
+    b.textContent='✓ Отправлено';
+    b.disabled=true;
+    b.style.opacity='.6';b.style.cursor='default';
+  });
+});
+
+// === SETTINGS BUTTONS ===
+document.querySelectorAll('.set-actions .btn-pri').forEach(function(b){
+  b.addEventListener('click',function(){showToast('Настройки сохранены')});
+});
+document.querySelectorAll('.set-actions .btn-ghost').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.querySelectorAll('.settings-card input[type="text"]').forEach(function(i){i.value='Mark K.'});
+    document.querySelectorAll('.settings-card input[type="email"]').forEach(function(i){i.value='mark@lumen-team.io'});
+    showToast('Изменения отменены');
+  });
+});
+
+// === PERIOD BUTTONS — show toast ===
+document.querySelectorAll('.period button').forEach(function(b){
+  b.addEventListener('click',function(){
+    showToast('Период: '+b.textContent.trim());
+  });
+});
+
+// === COUNTRY CARDS — clickable ===
+document.querySelectorAll('.cc').forEach(function(c){
+  c.style.cursor='pointer';
+  c.addEventListener('click',function(){
+    var n=c.querySelector('.nm');
+    if(!n)return;
+    var country=n.firstChild.textContent.trim();
+    var num=c.querySelector('.vv').firstChild.textContent.trim();
+    var gr=c.querySelector('.gr').textContent.trim();
+    var flag=c.querySelector('.flag').textContent;
+    var rows=[['Юзеров',num],['Рост 30Д',gr],['Главные города',n.querySelector('small').textContent]];
+    var rowsHtml=rows.map(function(p){return '<div class="row"><div class="l">'+p[0]+'</div><div class="v">'+p[1]+'</div></div>'}).join('');
+    openModal(flag+' '+country,'Детали по региону',rowsHtml,
+      '<button class="btn btn-ghost" onclick="closeModal()">Закрыть</button>'+
+      '<button class="btn btn-pri" onclick="closeModal();window.__lumenToast(\'Дриллдаун по '+country+' открыт\')">Дриллдаун</button>');
+  });
+});
+
+// === EXPERIMENTS CARDS — clickable ===
+document.querySelectorAll('.exp-card').forEach(function(card){
+  card.style.cursor='pointer';
+  card.addEventListener('click',function(){
+    var title=card.querySelector('h4').textContent;
+    var meta=card.querySelector('small').textContent;
+    var pill=card.querySelector('.pill').textContent.trim();
+    var vars=card.querySelectorAll('.exp-var');
+    var rowsHtml='<div class="row"><div class="l">Статус</div><div class="v">'+pill+'</div></div>'+
+                 '<div class="row"><div class="l">Период</div><div class="v">'+meta+'</div></div>';
+    vars.forEach(function(v){
+      rowsHtml+='<div class="row"><div class="l">'+v.querySelector('.name').textContent+'</div><div class="v">'+v.querySelector('.conv').textContent+' · '+v.querySelector('.delta').textContent+'</div></div>';
+    });
+    openModal(title,'A/B-тест',rowsHtml,'<button class="btn btn-ghost" onclick="closeModal()">Закрыть</button>'+
+      '<button class="btn btn-pri" onclick="closeModal();window.__lumenToast(\'Применить победителя\')">Применить победителя</button>');
+  });
 });
 </script>
 </body>
