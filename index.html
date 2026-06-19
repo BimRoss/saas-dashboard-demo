@@ -316,19 +316,40 @@ a{color:inherit;text-decoration:none}
 .ret-curve{padding:8px 20px 20px}
 .ret-curve svg{width:100%;height:200px;display:block}
 
-/* map world */
-.map-wrap{padding:8px 20px 20px}
-.map-wrap svg{width:100%;height:auto;display:block}
-.map-wrap .country{fill:#e3e9ee;stroke:#fff;stroke-width:.4;transition:fill .2s}
-.map-wrap .country.l1{fill:#ccfbf1}
-.map-wrap .country.l2{fill:#5eead4}
-.map-wrap .country.l3{fill:#14b8a6}
-.map-wrap .country.l4{fill:#0d9488}
-.map-wrap .country.l5{fill:#0f766e}
-.map-wrap .country:hover{fill:#ec4899;cursor:pointer}
-.map-legend{display:flex;gap:14px;justify-content:center;font-size:11px;color:var(--mut);padding:0 20px 14px;font-family:var(--mono)}
-.map-legend span{display:inline-flex;align-items:center;gap:5px}
-.map-legend i{width:14px;height:10px;border-radius:2px;display:inline-block}
+/* country bubble cards */
+.country-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;padding:14px 20px 20px}
+@media(max-width:1100px){.country-cards{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.country-cards{grid-template-columns:1fr}}
+.cc{background:var(--surface-2);border:1px solid var(--border);border-radius:12px;padding:14px 16px;transition:.2s;position:relative;overflow:hidden}
+.cc:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.cc .flag{font-size:26px;line-height:1;margin-bottom:8px}
+.cc .nm{font-size:13px;font-weight:600;color:var(--ink);letter-spacing:-.01em}
+.cc .nm small{display:block;font-size:11px;color:var(--mut);font-weight:500;margin-top:1px}
+.cc .vv{font-size:22px;font-weight:700;letter-spacing:-.025em;margin-top:8px;font-feature-settings:'tnum' 1;color:var(--ink)}
+.cc .vv small{font-size:11.5px;color:var(--mut);font-weight:500;margin-left:4px}
+.cc .gr{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:100px;background:var(--green-soft);color:var(--green);margin-top:6px;font-family:var(--mono)}
+.cc .gr.s{background:var(--accent-soft);color:var(--accent-2)}
+.cc .bar{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-top:10px;position:relative}
+.cc .bar i{position:absolute;left:0;top:0;height:100%;background:linear-gradient(90deg,#14b8a6,#0d9488);border-radius:3px;width:0;transition:width 1.2s cubic-bezier(.2,.7,.2,1)}
+
+/* toast */
+.toast{position:fixed;top:74px;right:24px;background:var(--ink);color:#fff;padding:11px 16px;border-radius:10px;font-size:13px;font-weight:500;display:flex;align-items:center;gap:9px;box-shadow:0 10px 32px -10px rgba(11,24,34,.45);opacity:0;transform:translateY(-8px);transition:.25s cubic-bezier(.2,.7,.2,1);z-index:1000;pointer-events:none;letter-spacing:-.01em}
+.toast.on{opacity:1;transform:translateY(0)}
+.toast svg{width:16px;height:16px;stroke:#5eead4;stroke-width:2.4;fill:none}
+
+/* notifications dropdown */
+.notif-wrap{position:relative}
+.notif-pop{position:absolute;top:42px;right:0;width:340px;background:#fff;border:1px solid var(--border);border-radius:13px;box-shadow:0 12px 36px -12px rgba(11,24,34,.18),0 4px 12px rgba(11,24,34,.06);padding:8px 0;opacity:0;transform:translateY(-6px);pointer-events:none;transition:.2s;z-index:60}
+.notif-pop.on{opacity:1;transform:translateY(0);pointer-events:auto}
+.notif-pop h4{font-size:13px;font-weight:700;padding:12px 16px 8px;letter-spacing:-.01em;display:flex;align-items:center;justify-content:space-between}
+.notif-pop h4 small{font-size:11px;font-weight:500;color:var(--accent-2);cursor:pointer}
+.notif-pop .ni{display:flex;gap:11px;padding:10px 16px;align-items:flex-start;border-top:1px solid var(--border);transition:.15s;cursor:pointer}
+.notif-pop .ni:hover{background:var(--surface-2)}
+.notif-pop .ni .ico{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:11px;font-weight:700;flex:none;font-family:var(--mono)}
+.notif-pop .ni .tx{flex:1;font-size:12.5px;line-height:1.4;color:var(--ink-2)}
+.notif-pop .ni .tx b{color:var(--ink);font-weight:600}
+.notif-pop .ni .tx small{display:block;font-size:11px;color:var(--mut);margin-top:2px}
+.notif-pop .unread{width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none;margin-top:9px}
 
 /* nps gauge */
 .nps-wrap{padding:14px 20px 20px;display:flex;align-items:center;gap:24px}
@@ -439,9 +460,20 @@ a{color:inherit;text-decoration:none}
         <button>90Д</button>
         <button>Год</button>
       </div>
-      <button class="icon-btn" title="Поделиться"><svg viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"/></svg></button>
-      <button class="icon-btn" title="Уведомления"><svg viewBox="0 0 24 24"><path d="M18 16v-5a6 6 0 1 0-12 0v5l-2 3h16zM10 19a2 2 0 0 0 4 0"/></svg><span class="dot"></span></button>
-      <button class="btn btn-pri"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Новый отчёт</button>
+      <button class="icon-btn" id="btnShare" title="Поделиться"><svg viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"/></svg></button>
+      <div class="notif-wrap">
+        <button class="icon-btn" id="btnNotif" title="Уведомления"><svg viewBox="0 0 24 24"><path d="M18 16v-5a6 6 0 1 0-12 0v5l-2 3h16zM10 19a2 2 0 0 0 4 0"/></svg><span class="dot"></span></button>
+        <div class="notif-pop" id="notifPop">
+          <h4>Уведомления <small id="markRead">Отметить прочитанным</small></h4>
+          <div class="ni"><div class="ico" style="background:linear-gradient(135deg,#10b981,#059669)">+</div><div class="tx"><b>+$49 MRR</b> · новая Pro-подписка от Алексея К.<small>2 минуты назад</small></div><div class="unread"></div></div>
+          <div class="ni"><div class="ico" style="background:linear-gradient(135deg,#ef4444,#dc2626)">!</div><div class="tx"><b>Churn-алерт</b> · отток за день вырос до 1.4% (норма 0.8%)<small>14 минут назад</small></div><div class="unread"></div></div>
+          <div class="ni"><div class="ico" style="background:linear-gradient(135deg,#06b6d4,#0891b2)">↑</div><div class="tx"><b>Upgrade</b> Иван П. перешёл с Team на Business — +$120 expansion<small>7 минут назад</small></div><div class="unread"></div></div>
+          <div class="ni"><div class="ico" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed)">★</div><div class="tx"><b>Победитель A/B</b> · Pricing Var.B закрылся p&lt;0.01, +28% ARPU<small>вчера, 18:42</small></div></div>
+          <div class="ni"><div class="ico" style="background:linear-gradient(135deg,#f59e0b,#d97706)">⚙</div><div class="tx"><b>GA4 синхронизация</b> завершена · 248 новых сессий<small>вчера, 09:00</small></div></div>
+        </div>
+      </div>
+      <button class="btn btn-pri" id="btnNewReport"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Новый отчёт</button>
+      <div class="toast" id="toast"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg><span id="toastTxt">Готово</span></div>
     </div>
   </header>
 
@@ -874,39 +906,19 @@ a{color:inherit;text-decoration:none}
 
     <div class="reveal" data-pages="geo">
       <section class="card">
-        <div class="card-h"><div><h3>Распределение юзеров по странам</h3><div class="sub">Карта мира · интенсивность по DAU</div></div></div>
-        <div class="map-wrap">
-          <svg viewBox="0 0 720 360" preserveAspectRatio="xMidYMid meet">
-            <rect width="720" height="360" fill="#f8fafc"/>
-            <!-- упрощённая стилизованная карта мира из прямоугольников и эллипсов -->
-            <ellipse cx="160" cy="240" rx="80" ry="60" class="country l1" title="ЮА"/>
-            <path class="country l2" d="M40 160 q20 -50 80 -60 q60 -10 100 20 q20 30 -10 50 q-30 20 -70 30 q-50 10 -80 10 q-30 0 -20 -50z"/>
-            <path class="country l4" d="M260 150 q40 -40 110 -45 q80 -5 110 25 q30 25 0 50 q-40 30 -120 35 q-80 5 -100 -15 q-20 -20 0 -50z"/>
-            <path class="country l5" d="M380 145 q50 -25 130 -22 q70 4 90 28 q15 22 -10 38 q-30 18 -100 22 q-80 4 -110 -12z" style="fill:#0f766e"/>
-            <path class="country l3" d="M460 200 q30 -20 90 -18 q50 2 70 18 q10 12 -10 22 q-30 14 -80 16 q-50 2 -70 -8z"/>
-            <ellipse cx="600" cy="280" rx="35" ry="22" class="country l2"/>
-            <ellipse cx="540" cy="260" rx="20" ry="14" class="country l1"/>
-            <ellipse cx="120" cy="100" rx="55" ry="22" class="country l1"/>
-            <ellipse cx="240" cy="240" rx="30" ry="20" class="country l1"/>
-            <path class="country l3" d="M350 220 q20 -10 50 -8 q25 2 30 10 q5 8 -10 14 q-25 8 -50 6 q-20 -2 -20 -10z"/>
-            <!-- city markers (top markets) -->
-            <circle cx="430" cy="125" r="7" fill="#ec4899" opacity=".85"/>
-            <circle cx="430" cy="125" r="14" fill="#ec4899" opacity=".25"/>
-            <text x="445" y="122" font-size="10" font-family="Inter" fill="#0b1822" font-weight="600">МСК · 2 140</text>
-            <circle cx="475" cy="155" r="5" fill="#06b6d4" opacity=".85"/>
-            <text x="485" y="158" font-size="9.5" font-family="Inter" fill="#0b1822" font-weight="600">Алматы · 1 240</text>
-            <circle cx="410" cy="150" r="4" fill="#8b5cf6" opacity=".85"/>
-            <text x="395" y="170" font-size="9.5" font-family="Inter" fill="#0b1822" font-weight="600">Минск · 890</text>
-            <circle cx="500" cy="170" r="3.5" fill="#f59e0b" opacity=".85"/>
-            <text x="510" y="173" font-size="9.5" font-family="Inter" fill="#0b1822" font-weight="600">Ташкент · 720</text>
-          </svg>
+        <div class="card-h">
+          <div><h3>Топ-стран по юзерам</h3><div class="sub">Доля от 12 480 активных за 30Д</div></div>
+          <div class="tabs"><button class="on">Юзеры</button><button>MRR</button><button>Рост</button></div>
         </div>
-        <div class="map-legend">
-          <span><i style="background:#ccfbf1"></i>1–50</span>
-          <span><i style="background:#5eead4"></i>50–500</span>
-          <span><i style="background:#14b8a6"></i>500–1500</span>
-          <span><i style="background:#0d9488"></i>1500–3000</span>
-          <span><i style="background:#0f766e"></i>3000+</span>
+        <div class="country-cards">
+          <div class="cc"><div class="flag">🇷🇺</div><div class="nm">Россия<small>Москва · СПб · Новосиб</small></div><div class="vv">4 580<small>юзеров</small></div><span class="gr">↑ 18%</span><div class="bar"><i data-w="100"></i></div></div>
+          <div class="cc"><div class="flag">🇰🇿</div><div class="nm">Казахстан<small>Алматы · Астана</small></div><div class="vv">2 780<small>юзеров</small></div><span class="gr">↑ 42%</span><div class="bar"><i data-w="61"></i></div></div>
+          <div class="cc"><div class="flag">🇧🇾</div><div class="nm">Беларусь<small>Минск · Гомель</small></div><div class="vv">1 890<small>юзеров</small></div><span class="gr">↑ 24%</span><div class="bar"><i data-w="41"></i></div></div>
+          <div class="cc"><div class="flag">🇺🇿</div><div class="nm">Узбекистан<small>Ташкент · Самарканд</small></div><div class="vv">1 390<small>юзеров</small></div><span class="gr">↑ 36%</span><div class="bar"><i data-w="30"></i></div></div>
+          <div class="cc"><div class="flag">🇦🇲</div><div class="nm">Армения<small>Ереван</small></div><div class="vv">890<small>юзеров</small></div><span class="gr">↑ 28%</span><div class="bar"><i data-w="19"></i></div></div>
+          <div class="cc"><div class="flag">🇬🇪</div><div class="nm">Грузия<small>Тбилиси · Батуми</small></div><div class="vv">420<small>юзеров</small></div><span class="gr">↑ 18%</span><div class="bar"><i data-w="9"></i></div></div>
+          <div class="cc"><div class="flag">🇩🇪</div><div class="nm">Германия<small>Берлин · Мюнхен</small></div><div class="vv">142<small>юзеров</small></div><span class="gr s">↑ 8%</span><div class="bar"><i data-w="3"></i></div></div>
+          <div class="cc"><div class="flag">🇮🇱</div><div class="nm">Израиль<small>Тель-Авив</small></div><div class="vv">98<small>юзеров</small></div><span class="gr s">↑ 12%</span><div class="bar"><i data-w="2"></i></div></div>
         </div>
       </section>
     </div>
@@ -1034,7 +1046,7 @@ function revealNow(scope){
     if(el.style.display==='none')return;
     el.classList.add('in');
     el.querySelectorAll('[data-count]').forEach(animateCount);
-    el.querySelectorAll('.funnel-bar i[data-w], .bar-row .track i[data-w], .nps-row .bar i[data-w]').forEach(function(i){setTimeout(function(){i.style.width=i.dataset.w+'%'},120)});
+    el.querySelectorAll('.funnel-bar i[data-w], .bar-row .track i[data-w], .nps-row .bar i[data-w], .cc .bar i[data-w]').forEach(function(i){setTimeout(function(){i.style.width=i.dataset.w+'%'},120)});
   });
 }
 
@@ -1067,7 +1079,7 @@ function goTo(slug){
   document.querySelectorAll('.reveal').forEach(function(el){
     el.classList.remove('in');
     el.querySelectorAll('[data-count]').forEach(function(c){c.dataset.done='';c.textContent='0'});
-    el.querySelectorAll('.funnel-bar i[data-w], .bar-row .track i[data-w], .nps-row .bar i[data-w]').forEach(function(i){i.style.width='0'});
+    el.querySelectorAll('.funnel-bar i[data-w], .bar-row .track i[data-w], .nps-row .bar i[data-w], .cc .bar i[data-w]').forEach(function(i){i.style.width='0'});
   });
   setTimeout(function(){revealNow(document)},40);
   window.scrollTo({top:0,behavior:'smooth'});
@@ -1094,6 +1106,63 @@ var hash=(location.hash||'').replace('#','');
 if(hash&&PAGES[hash])initial=hash;
 else{try{var saved=localStorage.getItem('lumen.page');if(saved&&PAGES[saved])initial=saved}catch(e){}}
 goTo(initial);
+
+// === HEADER BUTTONS ===
+var toast=document.getElementById('toast');
+var toastTxt=document.getElementById('toastTxt');
+var toastTimer=null;
+function showToast(msg){
+  toastTxt.textContent=msg;
+  toast.classList.add('on');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(function(){toast.classList.remove('on')},2400);
+}
+
+// Share — copy current URL to clipboard
+document.getElementById('btnShare').addEventListener('click',function(){
+  var url=location.href;
+  var ok=function(){showToast('Ссылка скопирована')};
+  var fail=function(){showToast('Не удалось скопировать — '+url)};
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(url).then(ok).catch(function(){
+      try{
+        var ta=document.createElement('textarea');ta.value=url;ta.style.position='fixed';ta.style.opacity='0';
+        document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);
+        ok();
+      }catch(e){fail()}
+    });
+  }else{
+    try{
+      var ta=document.createElement('textarea');ta.value=url;ta.style.position='fixed';ta.style.opacity='0';
+      document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);
+      ok();
+    }catch(e){fail()}
+  }
+});
+
+// Notifications dropdown
+var notifBtn=document.getElementById('btnNotif');
+var notifPop=document.getElementById('notifPop');
+var notifDot=notifBtn.querySelector('.dot');
+notifBtn.addEventListener('click',function(e){
+  e.stopPropagation();
+  notifPop.classList.toggle('on');
+});
+document.addEventListener('click',function(e){
+  if(!notifPop.contains(e.target)&&e.target!==notifBtn){notifPop.classList.remove('on')}
+});
+document.getElementById('markRead').addEventListener('click',function(e){
+  e.stopPropagation();
+  notifPop.querySelectorAll('.unread').forEach(function(d){d.style.display='none'});
+  if(notifDot)notifDot.style.display='none';
+  showToast('Все уведомления прочитаны');
+});
+
+// New report — navigate to reports page
+document.getElementById('btnNewReport').addEventListener('click',function(){
+  goTo('reports');
+  showToast('Раздел «Отчёты» открыт');
+});
 </script>
 </body>
 </html>
