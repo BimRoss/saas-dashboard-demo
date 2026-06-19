@@ -144,7 +144,8 @@ a{color:inherit;text-decoration:none}
 .legend-item b{color:var(--ink);font-weight:600;font-feature-settings:'tnum' 1}
 .legend-dot{width:9px;height:9px;border-radius:3px}
 .chart-wrap{position:relative;padding:0 12px 18px}
-.chart-wrap svg{width:100%;height:380px;display:block;overflow:visible}
+.chart-wrap svg{width:100%;height:240px;display:block;overflow:visible}
+#mrrChartHost svg{height:380px}
 .chart-wrap.tall svg{height:300px}
 .chart-x{display:flex;justify-content:space-between;font-size:10.5px;color:var(--faint);padding:6px 8px 0;font-family:var(--mono)}
 .chart-tooltip{position:absolute;top:8px;padding:10px 12px;background:#0b1822;color:#fff;border-radius:8px;font-size:11.5px;pointer-events:none;opacity:0;transition:opacity .12s,left .08s;box-shadow:0 10px 28px -8px rgba(11,24,34,.45);min-width:180px;z-index:20;letter-spacing:-.005em}
@@ -573,13 +574,13 @@ a{color:inherit;text-decoration:none}
             <h3>Recurring revenue · MRR / new / expansion / churned</h3>
             <div class="sub">Динамика за 30 дней по всем потокам</div>
           </div>
-          <div class="tabs">
-            <button>$$$</button>
-            <button class="on">Все потоки</button>
-            <button>%</button>
+          <div class="tabs" id="mrrTabs">
+            <button data-mrr-mode="mrr">Только MRR</button>
+            <button class="on" data-mrr-mode="all">Все потоки</button>
+            <button data-mrr-mode="pct">% роста</button>
           </div>
         </div>
-        <div class="chart-legend">
+        <div class="chart-legend" id="mrrLegend">
           <span class="legend-item"><span class="legend-dot" style="background:#0d9488"></span>MRR <b>$84.3k</b></span>
           <span class="legend-item"><span class="legend-dot" style="background:#06b6d4"></span>New <b>$12.4k</b></span>
           <span class="legend-item"><span class="legend-dot" style="background:#8b5cf6"></span>Expansion <b>$6.2k</b></span>
@@ -784,19 +785,10 @@ a{color:inherit;text-decoration:none}
     <div class="grid-2 reveal" data-pages="retention">
       <section class="card">
         <div class="card-h"><div><h3>Retention curve · weekly</h3><div class="sub">Средняя выживаемость когорт по неделям</div></div></div>
-        <div class="ret-curve">
-          <svg viewBox="0 0 600 200" preserveAspectRatio="none">
-            <defs><linearGradient id="rcG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0d9488" stop-opacity=".25"/><stop offset="100%" stop-color="#0d9488" stop-opacity="0"/></linearGradient></defs>
-            <line x1="0" y1="20" x2="600" y2="20" stroke="#eef1f4"/><line x1="0" y1="60" x2="600" y2="60" stroke="#eef1f4"/><line x1="0" y1="100" x2="600" y2="100" stroke="#eef1f4"/><line x1="0" y1="140" x2="600" y2="140" stroke="#eef1f4"/>
-            <path d="M0,20 L40,55 L80,75 L120,90 L160,100 L200,108 L240,115 L280,120 L320,124 L360,128 L400,131 L440,134 L480,136 L520,138 L560,140 L600,141 L600,200 L0,200 Z" fill="url(#rcG)"/>
-            <polyline points="0,20 40,55 80,75 120,90 160,100 200,108 240,115 280,120 320,124 360,128 400,131 440,134 480,136 520,138 560,140 600,141" fill="none" stroke="#0d9488" stroke-width="2.5"/>
-            <polyline points="0,20 40,48 80,68 120,82 160,92 200,100 240,107 280,112 320,116 360,120 400,123 440,126 480,128 520,130 560,132 600,133" fill="none" stroke="#3b82f6" stroke-width="2" stroke-dasharray="4 4"/>
-          </svg>
-          <div class="chart-x"><span>W0</span><span>W1</span><span>W2</span><span>W4</span><span>W6</span><span>W8</span><span>W10</span><span>W12</span></div>
-          <div class="chart-legend" style="padding-top:8px">
-            <span class="legend-item"><span class="legend-dot" style="background:#0d9488"></span>Все юзеры</span>
-            <span class="legend-item"><span class="legend-dot" style="background:#3b82f6"></span>Только платные <b>+12% vs all</b></span>
-          </div>
+        <div class="ret-curve" id="retCurveHost"></div>
+        <div class="chart-legend" style="padding:0 20px 16px">
+          <span class="legend-item"><span class="legend-dot" style="background:#0d9488"></span>Все юзеры</span>
+          <span class="legend-item"><span class="legend-dot" style="background:#3b82f6"></span>Только платные <b>+12% vs all</b></span>
         </div>
       </section>
       <section class="card">
@@ -898,19 +890,11 @@ a{color:inherit;text-decoration:none}
     <div class="grid-2 reveal" data-pages="cohorts">
       <section class="card">
         <div class="card-h"><div><h3>Retention curves · сравнение</h3><div class="sub">3 последних когорты overlay</div></div></div>
-        <div class="ret-curve">
-          <svg viewBox="0 0 600 200" preserveAspectRatio="none">
-            <line x1="0" y1="20" x2="600" y2="20" stroke="#eef1f4"/><line x1="0" y1="60" x2="600" y2="60" stroke="#eef1f4"/><line x1="0" y1="100" x2="600" y2="100" stroke="#eef1f4"/><line x1="0" y1="140" x2="600" y2="140" stroke="#eef1f4"/>
-            <polyline points="0,20 50,52 100,72 150,88 200,98 250,108 300,115 350,120 400,124 450,128 500,131 550,134 600,136" fill="none" stroke="#0d9488" stroke-width="2.5"/>
-            <polyline points="0,20 50,46 100,66 150,80 200,90 250,98 300,106 350,110 400,114 450,118 500,121 550,123 600,125" fill="none" stroke="#3b82f6" stroke-width="2.5"/>
-            <polyline points="0,20 50,42 100,60 150,76 200,84 250,92 300,99 350,104 400,108 450,112 500,115 550,117 600,119" fill="none" stroke="#8b5cf6" stroke-width="2.5"/>
-          </svg>
-          <div class="chart-x"><span>W0</span><span>W2</span><span>W4</span><span>W6</span><span>W8</span><span>W10</span><span>W12</span></div>
-          <div class="chart-legend" style="padding-top:8px">
-            <span class="legend-item"><span class="legend-dot" style="background:#0d9488"></span>Апрель '26</span>
-            <span class="legend-item"><span class="legend-dot" style="background:#3b82f6"></span>Май '26</span>
-            <span class="legend-item"><span class="legend-dot" style="background:#8b5cf6"></span>Июнь '26</span>
-          </div>
+        <div class="ret-curve" id="cohortCurveHost"></div>
+        <div class="chart-legend" style="padding:0 20px 16px">
+          <span class="legend-item"><span class="legend-dot" style="background:#0d9488"></span>Апрель '26</span>
+          <span class="legend-item"><span class="legend-dot" style="background:#3b82f6"></span>Май '26</span>
+          <span class="legend-item"><span class="legend-dot" style="background:#8b5cf6"></span>Июнь '26</span>
         </div>
       </section>
       <section class="card">
@@ -1368,8 +1352,10 @@ document.querySelectorAll('.exp-card').forEach(function(card){
   });
 });
 
-// === MRR CHART (data-driven, interactive) ===
-(function(){
+// === MRR CHART (data-driven, interactive, mode-switchable) ===
+var __mrrMode='all';
+function renderMrrChart(mode){
+  __mrrMode=mode||'all';
   var host=document.getElementById('mrrChartHost');
   if(!host)return;
 
@@ -1393,7 +1379,12 @@ document.querySelectorAll('.exp-card').forEach(function(card){
   function yMrr(v){return PT+(1-(v-mrrMin)/(mrrMax-mrrMin))*PH}
   function yFlow(v){return PT+(1-v/flowMax)*PH}
 
+  // In % mode we display MRR as % growth from baseline
+  var pctSeries=mrr.map(function(v){return (v/mrr[0]-1)*100});
+  var pctMin=0, pctMax=22;
+  function yPct(v){return PT+(1-(v-pctMin)/(pctMax-pctMin))*PH}
   function pointsMrr(){return mrr.map(function(v,i){return xAt(i).toFixed(1)+','+yMrr(v).toFixed(1)}).join(' ')}
+  function pointsPct(){return pctSeries.map(function(v,i){return xAt(i).toFixed(1)+','+yPct(v).toFixed(1)}).join(' ')}
   function pointsFlow(arr){return arr.map(function(v,i){return xAt(i).toFixed(1)+','+yFlow(v).toFixed(1)}).join(' ')}
 
   var leftTicks=[70000,74000,78000,82000,86000];
@@ -1404,26 +1395,37 @@ document.querySelectorAll('.exp-card').forEach(function(card){
   parts.push('<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none">');
   parts.push('<defs><linearGradient id="mrrG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0d9488" stop-opacity=".24"/><stop offset="100%" stop-color="#0d9488" stop-opacity="0"/></linearGradient></defs>');
 
-  // grid + left Y labels ($Xk · MRR scale)
-  leftTicks.forEach(function(v){
-    var y=yMrr(v);
-    parts.push('<line x1="'+PL+'" y1="'+y+'" x2="'+(W-PR)+'" y2="'+y+'" stroke="#eef1f4" stroke-width="1"/>');
-    parts.push('<text x="'+(PL-10)+'" y="'+(y+3.5)+'" text-anchor="end" font-size="10.5" fill="#5e6e7d" font-family="JetBrains Mono,monospace" font-weight="500">$'+(v/1000)+'k</text>');
-  });
-  // right Y labels ($/day · flow scale)
-  rightTicks.forEach(function(v){
-    var y=yFlow(v);
-    parts.push('<text x="'+(W-PR+10)+'" y="'+(y+3.5)+'" text-anchor="start" font-size="10.5" fill="#5e6e7d" font-family="JetBrains Mono,monospace" font-weight="500">$'+v+'</text>');
-  });
+  // grid + left Y labels
+  if(__mrrMode==='pct'){
+    [0,5,10,15,20].forEach(function(v){
+      var y=yPct(v);
+      parts.push('<line x1="'+PL+'" y1="'+y+'" x2="'+(W-PR)+'" y2="'+y+'" stroke="#eef1f4" stroke-width="1"/>');
+      parts.push('<text x="'+(PL-10)+'" y="'+(y+3.5)+'" text-anchor="end" font-size="10.5" fill="#5e6e7d" font-family="JetBrains Mono,monospace" font-weight="500">+'+v+'%</text>');
+    });
+  } else {
+    leftTicks.forEach(function(v){
+      var y=yMrr(v);
+      parts.push('<line x1="'+PL+'" y1="'+y+'" x2="'+(W-PR)+'" y2="'+y+'" stroke="#eef1f4" stroke-width="1"/>');
+      parts.push('<text x="'+(PL-10)+'" y="'+(y+3.5)+'" text-anchor="end" font-size="10.5" fill="#5e6e7d" font-family="JetBrains Mono,monospace" font-weight="500">$'+(v/1000)+'k</text>');
+    });
+    // right Y labels — only in 'all' mode (when flow lines are visible)
+    if(__mrrMode==='all'){
+      rightTicks.forEach(function(v){
+        var y=yFlow(v);
+        parts.push('<text x="'+(W-PR+10)+'" y="'+(y+3.5)+'" text-anchor="start" font-size="10.5" fill="#5e6e7d" font-family="JetBrains Mono,monospace" font-weight="500">$'+v+'</text>');
+      });
+    }
+  }
 
   // axes lines
   parts.push('<line x1="'+PL+'" y1="'+PT+'" x2="'+PL+'" y2="'+(PT+PH)+'" stroke="#cdd6dd" stroke-width="1"/>');
   parts.push('<line x1="'+PL+'" y1="'+(PT+PH)+'" x2="'+(W-PR)+'" y2="'+(PT+PH)+'" stroke="#cdd6dd" stroke-width="1"/>');
   parts.push('<line x1="'+(W-PR)+'" y1="'+PT+'" x2="'+(W-PR)+'" y2="'+(PT+PH)+'" stroke="#cdd6dd" stroke-width="1"/>');
 
-  // axis captions (above each axis, away from plot area)
-  parts.push('<text x="'+(PL-10)+'" y="'+(PT-10)+'" text-anchor="end" font-size="9.5" fill="#9aa7b3" font-family="JetBrains Mono,monospace" font-weight="600" letter-spacing="1">MRR · $</text>');
-  parts.push('<text x="'+(W-PR+10)+'" y="'+(PT-10)+'" text-anchor="start" font-size="9.5" fill="#9aa7b3" font-family="JetBrains Mono,monospace" font-weight="600" letter-spacing="1">$ / ДЕНЬ</text>');
+  // axis captions
+  var leftCap=(__mrrMode==='pct'?'% РОСТА':'MRR · $');
+  parts.push('<text x="'+(PL-10)+'" y="'+(PT-10)+'" text-anchor="end" font-size="9.5" fill="#9aa7b3" font-family="JetBrains Mono,monospace" font-weight="600" letter-spacing="1">'+leftCap+'</text>');
+  if(__mrrMode==='all')parts.push('<text x="'+(W-PR+10)+'" y="'+(PT-10)+'" text-anchor="start" font-size="9.5" fill="#9aa7b3" font-family="JetBrains Mono,monospace" font-weight="600" letter-spacing="1">$ / ДЕНЬ</text>');
 
   // x labels (every 5; last label always gets month suffix; right-anchored at end)
   for(var i=0;i<N-1;i+=xLabelEvery){
@@ -1432,20 +1434,29 @@ document.querySelectorAll('.exp-card').forEach(function(card){
   var lastL=dates[N-1]; if(!/\s/.test(lastL))lastL=lastL+' июн';
   parts.push('<text x="'+xAt(N-1)+'" y="'+(H-16)+'" text-anchor="end" font-size="10.5" fill="#5e6e7d" font-family="JetBrains Mono,monospace" font-weight="500">'+lastL+'</text>');
 
-  // MRR area
-  var mrrPts=pointsMrr();
-  parts.push('<path d="M'+xAt(0).toFixed(1)+','+yMrr(mrr[0]).toFixed(1)+' L'+mrrPts.split(' ').slice(1).join(' L')+' L'+xAt(N-1).toFixed(1)+','+(PT+PH).toFixed(1)+' L'+xAt(0).toFixed(1)+','+(PT+PH).toFixed(1)+' Z" fill="url(#mrrG)"/>');
-  parts.push('<polyline points="'+mrrPts+'" fill="none" stroke="#0d9488" stroke-width="2.5" stroke-linejoin="round"/>');
-  parts.push('<polyline points="'+pointsFlow(newR)+'" fill="none" stroke="#06b6d4" stroke-width="2" stroke-linejoin="round"/>');
-  parts.push('<polyline points="'+pointsFlow(expR)+'" fill="none" stroke="#8b5cf6" stroke-width="1.8" stroke-dasharray="3 3"/>');
-  parts.push('<polyline points="'+pointsFlow(churn)+'" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="2 4"/>');
-
-  // dots (hidden, shown on hover)
-  for(var i=0;i<N;i++){
-    parts.push('<circle class="mrr-dot" data-i="'+i+'" cx="'+xAt(i)+'" cy="'+yMrr(mrr[i])+'" r="4" fill="#fff" stroke="#0d9488" stroke-width="2" opacity="0"/>');
+  // MRR area + line (in mrr/all modes) OR % growth line (in pct mode)
+  if(__mrrMode==='pct'){
+    var pctPts=pointsPct();
+    parts.push('<path d="M'+xAt(0).toFixed(1)+','+yPct(pctSeries[0]).toFixed(1)+' L'+pctPts.split(' ').slice(1).join(' L')+' L'+xAt(N-1).toFixed(1)+','+(PT+PH).toFixed(1)+' L'+xAt(0).toFixed(1)+','+(PT+PH).toFixed(1)+' Z" fill="url(#mrrG)"/>');
+    parts.push('<polyline points="'+pctPts+'" fill="none" stroke="#0d9488" stroke-width="2.5" stroke-linejoin="round"/>');
+  } else {
+    var mrrPts=pointsMrr();
+    parts.push('<path d="M'+xAt(0).toFixed(1)+','+yMrr(mrr[0]).toFixed(1)+' L'+mrrPts.split(' ').slice(1).join(' L')+' L'+xAt(N-1).toFixed(1)+','+(PT+PH).toFixed(1)+' L'+xAt(0).toFixed(1)+','+(PT+PH).toFixed(1)+' Z" fill="url(#mrrG)"/>');
+    parts.push('<polyline points="'+mrrPts+'" fill="none" stroke="#0d9488" stroke-width="2.5" stroke-linejoin="round"/>');
+    if(__mrrMode==='all'){
+      parts.push('<polyline points="'+pointsFlow(newR)+'" fill="none" stroke="#06b6d4" stroke-width="2" stroke-linejoin="round"/>');
+      parts.push('<polyline points="'+pointsFlow(expR)+'" fill="none" stroke="#8b5cf6" stroke-width="1.8" stroke-dasharray="3 3"/>');
+      parts.push('<polyline points="'+pointsFlow(churn)+'" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="2 4"/>');
+    }
   }
-  // last MRR point always visible
-  parts.push('<circle cx="'+xAt(N-1)+'" cy="'+yMrr(mrr[N-1])+'" r="5" fill="#fff" stroke="#0d9488" stroke-width="2.5"/>');
+
+  // dots (hidden, shown on hover) — track the active series
+  function yActive(i){return __mrrMode==='pct'?yPct(pctSeries[i]):yMrr(mrr[i])}
+  for(var i=0;i<N;i++){
+    parts.push('<circle class="mrr-dot" data-i="'+i+'" cx="'+xAt(i)+'" cy="'+yActive(i)+'" r="4" fill="#fff" stroke="#0d9488" stroke-width="2" opacity="0"/>');
+  }
+  // last point always visible
+  parts.push('<circle cx="'+xAt(N-1)+'" cy="'+yActive(N-1)+'" r="5" fill="#fff" stroke="#0d9488" stroke-width="2.5"/>');
 
   // hover guide
   parts.push('<line class="hover-line" x1="0" y1="'+PT+'" x2="0" y2="'+(PT+PH)+'" stroke="#0d9488" stroke-width="1" stroke-dasharray="3 3" opacity="0"/>');
@@ -1475,12 +1486,20 @@ document.querySelectorAll('.exp-card').forEach(function(card){
     hoverLine.setAttribute('opacity','1');
     var dLabel=dates[idx];
     if(!/\s/.test(dLabel))dLabel+=(idx<=12?' мая':' июн');
-    tip.innerHTML=
-      '<div class="d">'+dLabel+' · 2026</div>'+
-      '<div class="r"><span class="dt" style="background:#0d9488"></span>MRR<b>$'+fmtN(mrr[idx])+'</b></div>'+
-      '<div class="r"><span class="dt" style="background:#06b6d4"></span>New<b>$'+fmtN(newR[idx])+'</b></div>'+
-      '<div class="r"><span class="dt" style="background:#8b5cf6"></span>Expansion<b>$'+fmtN(expR[idx])+'</b></div>'+
-      '<div class="r"><span class="dt" style="background:#ef4444"></span>Churned<b>−$'+fmtN(churn[idx])+'</b></div>';
+    var html='<div class="d">'+dLabel+' · 2026</div>';
+    if(__mrrMode==='pct'){
+      html+='<div class="r"><span class="dt" style="background:#0d9488"></span>Рост MRR<b>+'+pctSeries[idx].toFixed(1).replace('.',',')+'%</b></div>';
+      html+='<div class="r"><span class="dt" style="background:#9aa7b3"></span>База (19 мая)<b>$'+fmtN(mrr[0])+'</b></div>';
+      html+='<div class="r"><span class="dt" style="background:#0d9488"></span>Текущее MRR<b>$'+fmtN(mrr[idx])+'</b></div>';
+    } else {
+      html+='<div class="r"><span class="dt" style="background:#0d9488"></span>MRR<b>$'+fmtN(mrr[idx])+'</b></div>';
+      if(__mrrMode==='all'){
+        html+='<div class="r"><span class="dt" style="background:#06b6d4"></span>New<b>$'+fmtN(newR[idx])+'</b></div>';
+        html+='<div class="r"><span class="dt" style="background:#8b5cf6"></span>Expansion<b>$'+fmtN(expR[idx])+'</b></div>';
+        html+='<div class="r"><span class="dt" style="background:#ef4444"></span>Churned<b>−$'+fmtN(churn[idx])+'</b></div>';
+      }
+    }
+    tip.innerHTML=html;
     var hostRect=host.getBoundingClientRect();
     var xRel=(xPx/W)*hostRect.width;
     var tipW=190;
@@ -1495,7 +1514,62 @@ document.querySelectorAll('.exp-card').forEach(function(card){
     hoverLine.setAttribute('opacity','0');
     tip.style.opacity='0';
   });
+}
+renderMrrChart('all');
+
+// Wire MRR tabs to switch chart mode
+(function(){
+  var tabs=document.querySelectorAll('#mrrTabs button[data-mrr-mode]');
+  tabs.forEach(function(b){
+    b.addEventListener('click',function(){
+      tabs.forEach(function(t){t.classList.remove('on')});
+      b.classList.add('on');
+      renderMrrChart(b.dataset.mrrMode);
+    });
+  });
 })();
+
+// === RETENTION CURVE CHARTS (data-driven, with axes) ===
+function renderRetentionChart(hostId,series,weeks){
+  var host=document.getElementById(hostId);
+  if(!host)return;
+  var W=620,H=240,PL=42,PR=14,PT=16,PB=32;
+  var PW=W-PL-PR, PH=H-PT-PB;
+  function xAt(i){return PL+(i/(weeks.length-1))*PW}
+  function yAt(v){return PT+(1-v/100)*PH}
+  var parts=['<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none" style="width:100%;height:240px;display:block">'];
+  [0,25,50,75,100].forEach(function(v){
+    var y=yAt(v);
+    parts.push('<line x1="'+PL+'" y1="'+y+'" x2="'+(W-PR)+'" y2="'+y+'" stroke="#eef1f4" stroke-width="1"/>');
+    parts.push('<text x="'+(PL-8)+'" y="'+(y+3.5)+'" text-anchor="end" font-size="10.5" fill="#5e6e7d" font-family="JetBrains Mono,monospace" font-weight="500">'+v+'%</text>');
+  });
+  parts.push('<line x1="'+PL+'" y1="'+PT+'" x2="'+PL+'" y2="'+(PT+PH)+'" stroke="#cdd6dd"/>');
+  parts.push('<line x1="'+PL+'" y1="'+(PT+PH)+'" x2="'+(W-PR)+'" y2="'+(PT+PH)+'" stroke="#cdd6dd"/>');
+  weeks.forEach(function(w,i){
+    parts.push('<text x="'+xAt(i)+'" y="'+(H-12)+'" text-anchor="middle" font-size="10.5" fill="#5e6e7d" font-family="JetBrains Mono,monospace" font-weight="500">'+w+'</text>');
+  });
+  series.forEach(function(s){
+    var pts=s.points.map(function(v,i){return xAt(i).toFixed(1)+','+yAt(v).toFixed(1)}).join(' ');
+    parts.push('<polyline points="'+pts+'" fill="none" stroke="'+s.color+'" stroke-width="2.4" stroke-linejoin="round"'+(s.dashed?' stroke-dasharray="4 4"':'')+'/>');
+    s.points.forEach(function(v,i){
+      parts.push('<circle cx="'+xAt(i)+'" cy="'+yAt(v)+'" r="3.5" fill="#fff" stroke="'+s.color+'" stroke-width="2"/>');
+    });
+  });
+  parts.push('</svg>');
+  host.innerHTML=parts.join('');
+}
+
+renderRetentionChart('retCurveHost',[
+  {name:'Все юзеры',color:'#0d9488',points:[100,72,55,42,33,28,24,22]},
+  {name:'Только платные',color:'#3b82f6',dashed:true,points:[100,80,68,55,48,42,38,35]}
+],['W0','W1','W2','W4','W6','W8','W10','W12']);
+
+renderRetentionChart('cohortCurveHost',[
+  {name:'Апрель 26',color:'#0d9488',points:[100,80,58,44,38,33,30,27]},
+  {name:'Май 26',color:'#3b82f6',points:[100,82,62,50,42,37,33,30]},
+  {name:'Июнь 26',color:'#8b5cf6',points:[100,84,66,54,46,40,36,33]}
+],['W0','W1','W2','W4','W6','W8','W10','W12']);
+
 </script>
 </body>
 </html>
